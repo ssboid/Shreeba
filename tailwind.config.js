@@ -5,7 +5,24 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        borderDefault: '#BBC2C9',
+        primaryOrange: '#DE761C',
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase }) {
+      addBase({
+        '#root': {
+          padding: '0', // example padding removal
+          backgroundColor: '#f0f0f0', // example background color
+          minHeight: '100vh', // example full screen height
+          width: '100%', // ensures full width
+          maxWidth: 'none', // disables max-width
+        },
+      });
+    },
+  ],
 }
