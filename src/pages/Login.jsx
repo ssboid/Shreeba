@@ -47,7 +47,7 @@ const Login = () => {
           <aside className="relative block h-72 lg:order-first w-full lg:col-span-5 lg:h-full xl:col-span-6 order-2 lg:order-1 overflow-hidden">
             <img
               alt=""
-              src="src\assets\Cover.png"
+              src="src\assets\brand\Cover.png"
               className="absolute inset-0 w-full object-top object-cover"
             />
           </aside>
