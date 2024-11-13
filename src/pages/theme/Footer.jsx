@@ -1,55 +1,38 @@
 import React from 'react';
-import LMB from "../../assets/brand/Cover.png";
+import LogoWhite from "../../assets/brand/logo-white.png";
 
 const Footer = () => {
   return (
-    <div className="footer">
-      <div className="newsletterbox">
-        {/* <div className="newssub">
-          <div className="labelheading">
-            Subscribe to our newsletter
-          </div>
-          <div className="newsletterform">
-            <form >
-              <input type="text" className="nlfinput" name="nlname" placeholder="Name.." />
-              <input type="text" className="nlfinput" name="nlemail" placeholder="email@email.com" />
-              <input type="submit" id="nlfsubmit" name="nlsend" value="Subscribe" />
-            </form>
-          </div>
-        </div> */}
-        <div className="bottomtext">
-          <div className="btbox">
-            <img src={LMB} id="logo2nd" alt="logo" /><br />
-            Library Manager gives you the options to find the books you need.
-          </div>
-          <div className="btbox">
-            <div className="btboxheading">
-              Company
-            </div>
-            <div className="btboxitems">
-              About
-            </div>
-            <div className="btboxitems">
-              Features
-            </div>
-          </div>
-          <div className="btbox">
-            <div className="btboxheading">
-              Help
-            </div>
-            <div className="btboxitems">
-              Customer Support
-            </div>
-            <div className="btboxitems">
-              Terms and conditions
-            </div>
-            <div className="btboxitems">
-              Privacy Policy
-            </div>
-          </div>
+    <footer className="bg-gray-800 text-white py-32 pt-24">
+      <div className="container mx-auto px-[8.33%] flex flex-col md:flex-row justify-between items-start space-y-8 md:space-y-0">
+        
+        {/* Logo and Description */}
+        <div className="flex-shrink-0">
+          <img src={LogoWhite} alt="logo" className="h-12 mb-4" />
+          <p className="text-gray-400 w-72 text-left">Inventory tracker allows you to efficiently manage your stock.</p>
         </div>
+        
+        {/* Company Section */}
+        <div className="flex flex-col">
+          <h3 className="text-lg font-semibold mb-2 text-left">Company</h3>
+          <ul className="space-y-1 text-gray-300 text-left">
+            <li><a href="#" className="hover:text-white">About</a></li>
+            <li><a href="#" className="hover:text-white">Features</a></li>
+          </ul>
+        </div>
+        
+        {/* Help Section */}
+        <div className="flex flex-col">
+          <h3 className="text-lg font-semibold mb-2 text-left">Help</h3>
+          <ul className="space-y-1 text-gray-300 text-left">
+            <li><a href="#" className="hover:text-white">Customer Support</a></li>
+            <li><a href="#" className="hover:text-white">Terms and conditions</a></li>
+            <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+          </ul>
+        </div>
+        
       </div>
-    </div>
+    </footer>
   );
 };
 

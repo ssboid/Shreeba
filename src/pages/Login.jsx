@@ -20,9 +20,8 @@ const Login = () => {
       const users = await getUsers();
       console.log("Fetched users data:", users); // Log users data
 
-      const user = users.find(
-        (u) => u.userName === username && u.userPassword === password
-      );
+     const user = users.find((u) => u.userName === username && u.userPassword === password);
+
       console.log("User found:", user); // Log if a user is found or not
 
       if (user) {
@@ -87,7 +86,7 @@ const Login = () => {
                     name="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 w-full   h-10 md:h-10 lg:h-12 p-2.5 rounded-md bg-white text-sm text-gray-700 shadow-sm border border-borderDefault focus:border-[#DE761C]"
+                    className="mt-1 w-full focus:outline-none h-10 md:h-10 lg:h-12 p-2.5 rounded-md bg-white text-sm text-gray-700 shadow-sm border border-borderDefault focus:border-primaryOrange"
                   />
                 </div>
 
@@ -105,7 +104,7 @@ const Login = () => {
                     name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1 w-full   h-10 md:h-10 lg:h-12 p-2.5 rounded-md bg-white text-sm text-gray-700 shadow-sm border border-borderDefault focus:border-[#DE761C]"
+                    className="mt-1 w-full focus:outline-none  h-10 md:h-10 lg:h-12 p-2.5 rounded-md bg-white text-sm text-gray-700 shadow-sm border border-borderDefault focus:border-[#DE761C]"
                   />
                 </div>
 

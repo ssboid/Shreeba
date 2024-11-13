@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa"; // Import the hamburger icon
-import HeaderLogo from "../assets/brand/header-logo.png";
+import Cover from "../assets/brand/Cover.png";
 
 const AdminDashboard = () => {
-
   return (
-  <div>
-
-  </div>
+    <div>
+      <img src={Cover} alt="dummy" className="inset-0 w-full object-top object-cover" />
+    </div>
   );
 };
 

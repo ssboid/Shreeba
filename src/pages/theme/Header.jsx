@@ -17,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between bg-secondary100 p-4 text-black border-b border-gray-200 relative">
+    <header className="flex items-center justify-between bg-secondary100 py-4 px-[8.33%] text-black border-b border-gray-200 relative">
       {/* Logo */}
       <Link to="/" className="flex items-center space-x-2">
         <img src={HeaderLogo} alt="Shreeba Collection Logo" className="h-12 w-auto" />
