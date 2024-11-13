@@ -1,11 +1,11 @@
 import React from 'react';
-import LMB from "../../assets/brand/LMB.png";
+import LMB from "../../assets/brand/Cover.png";
 
 const Footer = () => {
   return (
     <div className="footer">
       <div className="newsletterbox">
-        <div className="newssub">
+        {/* <div className="newssub">
           <div className="labelheading">
             Subscribe to our newsletter
           </div>
@@ -16,7 +16,7 @@ const Footer = () => {
               <input type="submit" id="nlfsubmit" name="nlsend" value="Subscribe" />
             </form>
           </div>
-        </div>
+        </div> */}
         <div className="bottomtext">
           <div className="btbox">
             <img src={LMB} id="logo2nd" alt="logo" /><br />
