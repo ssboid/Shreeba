@@ -28,7 +28,7 @@ const Header = () => {
         className="sm:hidden flex items-center justify-center"
         onClick={toggleMenu}
       >
-        <FaBars className="text-black text-2xl" />
+        <FaBars className="text-primary1000 text-2xl" />
       </button>
 
       {/* Desktop Navigation Links */}
@@ -64,7 +64,7 @@ const Header = () => {
 
       {/* Mobile Menu - Vertical List */}
       {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-secondary100 flex flex-col items-start p-4 space-y-4 sm:hidden">
+        <div className="px-[8.33%] absolute top-16 left-0 w-full bg-secondary100 flex flex-col items-start p-4 space-y-4 sm:hidden">
           <Link to="/browse" className="flex items-center text-primaryOrange hover:text-gray-700 space-x-1">
             <FaThList />
             <span>Browse</span>

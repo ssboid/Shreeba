@@ -9,6 +9,7 @@ export default {
       colors: {
         borderDefault: '#BBC2C9',
         primaryOrange: '#DE761C',
+        primary100: '#FBECDE',
         primary1000: '#59300B',
         secondary100: '#FAFAEE',
       },
