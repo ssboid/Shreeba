@@ -33,9 +33,9 @@ const Header = () => {
 
       {/* Desktop Navigation Links */}
       <nav className="hidden sm:flex items-center space-x-6">
-        <Link to="/browse" className="flex items-center text-primaryOrange hover:text-gray-700 space-x-1">
+        <Link to="/browse" className="flex items-center text-primaryOrange hover:text-gray-700 space-x-2">
           <FaThList />
-          <span>Browse</span>
+          <span>View All</span>
         </Link>
 
         <form className="flex items-center space-x-2">
@@ -55,7 +55,7 @@ const Header = () => {
 
         <button
           onClick={logout}
-          className="flex items-center text-primaryOrange hover:text-gray-700 space-x-1"
+          className="flex align-center items-center text-primaryOrange hover:text-gray-700 space-x-2"
         >
           <FaSignInAlt />
           <span>Login</span>
