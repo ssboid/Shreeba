@@ -4,6 +4,7 @@ import './App.css';
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import Layout from "./pages/theme/Layout";
+import ProductDetails from "./pages/ProductDetails";
 function App() {
   return (
     <div>
@@ -15,6 +16,8 @@ function App() {
           {/* Protected/Admin Routes within Layout */}
           <Route element={<Layout />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/product-details" element={<ProductDetails />} />
+
           </Route>
           
           {/* Redirect any unknown routes */}
