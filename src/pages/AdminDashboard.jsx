@@ -6,7 +6,7 @@ import Cover from "../assets/brand/Cover.png";
 const AdminDashboard = () => {
   return (
     <div>
-      {/* <img src={Cover} alt="dummy" className="inset-0 w-full object-top object-cover" /> */}
+      <img src={Cover} alt="dummy" className="inset-0 w-full object-top object-cover" />
     </div>
   );
 };

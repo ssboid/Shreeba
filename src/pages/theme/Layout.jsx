@@ -12,9 +12,9 @@ const Layout = () => {
       </div>
 
       {/* Sidebar and Main Content */}
-      <div className="flex flex-grow">
+      <div className="flex flex-grow p-6 space-x-6 px-[8.33%]">
         <Sidebar />
-        <div className="flex-grow p-6">
+        <div className="flex-grow">
           <Outlet />
         </div>
       </div>

@@ -13,6 +13,11 @@ export default {
         primary1000: '#59300B',
         secondary100: '#FAFAEE',
       },
+      spacing: {
+        '72': '18rem',  // 72px spacing
+        '80': '20rem',  // 80px spacing
+        '96': '24rem',  // 96px spacing
+      },
     },
   },
   plugins: [
