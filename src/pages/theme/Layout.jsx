@@ -5,26 +5,22 @@ import Sidebar from "./Sidebar";
 
 const Layout = () => {
   return (
-    <div className="bg-secondary100 flex relative">
-      {/* Sidebar with higher z-index */}
-      <div className="relative z-20">
-        <Sidebar />
-      </div>
-      <div className="flex flex-col flex-grow">
-        <Header />
-        <div className="flex-grow h-screen p-6">
-          <div className="relative">
-            {/* Transparent Overlay */}
-            <div className="absolute inset-0 bg-white bg-opacity-20 pointer-events-none z-0"></div>
-            <div className="relative z-10">
-              <Outlet />
-            </div>
-          </div>
+    <div className="bg-secondary100 flex flex-col min-h-screen relative">
+      <Header />
+      <div className="flex flex-grow mt-8 "> {/* Add top margin and horizontal padding */}
+        {/* Sidebar and Outlet in a single flex container */}
+        <div className="hidden lg:block lg:w-1/4 relative z-20 flex-shrink-0">
+          <Sidebar />
         </div>
-        <Footer />
+        <div className="flex-grow ml-4 mr-8 w-full lg:w-3/4"> {/* Add left margin to create gap between Sidebar and Outlet */}
+          <Outlet />
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
 
 export default Layout;
+
+
