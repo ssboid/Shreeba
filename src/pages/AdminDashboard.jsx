@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaBars } from "react-icons/fa"; // Import the hamburger icon
-import Cover from "../assets/brand/Cover.png";
-
+import React from "react";
+import Breadcrumb from "./components/Breadcrumb";
 const AdminDashboard = () => {
+  const breadcrumbLinks = [
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Goods', href: '/goods' },
+    { label: 'Add Item' }, // No `href` for the current page
+  ];
+
   return (
-    <div>
-      {/* <img src={Cover} alt="dummy" className="inset-0 w-full object-top object-cover" /> */}
+    <div className="p-6">
+      <Breadcrumb title="Add Item" links={breadcrumbLinks} />
     </div>
   );
 };
