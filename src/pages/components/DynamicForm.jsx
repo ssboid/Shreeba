@@ -1,29 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import * as Form from "@radix-ui/react-form";
-import { NepaliDatePicker } from "nepali-datepicker-reactjs";
-import "nepali-datepicker-reactjs/dist/index.css";
+import CalendarSection from "./CalendarSection";
 
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
 
-  const calendarRef = useRef(null);
-  useEffect(() => {
-    if (calendarRef.current) {
-      // Automatically trigger focus when the component mounts
-      calendarRef.current.click();
-    }
-  }, []);
   const handleDateChange = (date) => {
     setPurchaseDate(date);
     console.log("Selected Date:", date);
   };
-
-  useEffect(() => {
-    if (calendarRef.current) {
-      // Automatically trigger focus when the component mounts
-      calendarRef.current.click();
-    }
-  }, []);
 
   return (
     <Form.Root className="p-6 bg-white rounded shadow-md space-y-6">
@@ -93,18 +78,10 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         </div>
 
         {/* Calendar Section */}
-        <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-          <h2 className="mb-4 text-lg font-semibold text-gray-800">
-            Purchase Date
-          </h2>
-          <NepaliDatePicker
-         ref={calendarRef}
-         className="w-full p-2 border rounded-lg text-gray-800"
-         value={purchaseDate}
-         onChange={handleDateChange}
-         options={{ calenderLocale: "ne", valueLocale: "en" }}
-          />
-        </div>
+        <CalendarSection
+          purchaseDate={purchaseDate}
+          handleDateChange={handleDateChange}
+        />
       </div>
 
       {/* Wholesaler & Pricing Section */}

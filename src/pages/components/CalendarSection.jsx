@@ -1,24 +1,24 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 
 const CalendarSection = ({ purchaseDate, handleDateChange }) => {
-  const calendarRef = useRef(null);
+  const calendarInputRef = useRef(null);
 
   useEffect(() => {
-    if (calendarRef.current) {
-      // Automatically trigger focus when the component mounts
-      calendarRef.current.click();
+    if (calendarInputRef.current) {
+      // Automatically focus on the calendar input when the component is rendered
+      calendarInputRef.current.focus();
     }
   }, []);
 
   return (
-    <div className="w-1/2 p-4 border rounded-md shadow-sm bg-gray-50">
+    <div className="p-4 border rounded-md shadow-sm bg-gray-50">
       <h2 className="mb-4 text-lg font-semibold text-gray-800">
         Purchase Date
       </h2>
       <NepaliDatePicker
-        ref={calendarRef}
+        inputRef={calendarInputRef}
         className="w-full p-2 border rounded-lg text-gray-800"
         value={purchaseDate}
         onChange={handleDateChange}
