@@ -2,7 +2,7 @@ import React from 'react';
 
 const Breadcrumb = ({ title, links }) => {
   return (
-    <div className="p-4 bg-white shadow-md">
+    <div className="p-4 bg-white shadow-md rounded-lg">
       <h1 className="text-lg font-semibold text-gray-800 text-left">{title}</h1>
       <nav className="flex mt-2" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
