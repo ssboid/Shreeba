@@ -12,6 +12,7 @@ export default {
         primary100: '#FBECDE',
         primary1000: '#59300B',
         secondary100: '#FAFAEE',
+        
       },
       spacing: {
         '72': '18rem',  // 72px spacing
