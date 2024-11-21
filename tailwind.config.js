@@ -11,6 +11,7 @@ export default {
         primaryOrange: '#DE761C',
         primary1000: '#59300B',
         secondary100: '#FAFAEE',
+        
       },
     },
   },

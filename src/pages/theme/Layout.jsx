@@ -5,26 +5,22 @@ import Sidebar from "./Sidebar";
 
 const Layout = () => {
   return (
-    <div className="bg-secondary100 min-h-screen flex flex-col">
-      {/* Header */}
-      <div>
-        <Header />
-      </div>
-
-      {/* Sidebar and Main Content */}
-      <div className="flex flex-grow">
-        <Sidebar />
-        <div className="flex-grow p-6">
+    <div className="bg-secondary100 flex flex-col min-h-screen relative">
+      <Header />
+      <div className="flex flex-grow mt-8 px-[8.33%]"> {/* Add top margin and horizontal padding */}
+        {/* Sidebar and Outlet in a single flex container */}
+        <div className="hidden lg:block lg:w-1/4 relative z-20 flex-shrink-0">
+          <Sidebar />
+        </div>
+        <div className="flex-grow ml-4 mr-8 w-full lg:w-3/4"> {/* Add left margin to create gap between Sidebar and Outlet */}
           <Outlet />
         </div>
       </div>
-
-      {/* Footer */}
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
 
 export default Layout;
+
+
