@@ -3,7 +3,7 @@ import { FaTh, FaShoppingBag, FaUsers, FaChartLine, FaInfoCircle } from "react-i
 
 const Sidebar = () => {
   return (
-    <div className="sticky  h-[calc(100vh-128px)] ml-12 w-64 rounded-2xl bg-secondary100 shadow-2xl flex flex-col p-4 space-y-4">
+    <div className="sticky w-64 rounded-2xl bg-secondary100 shadow-2xl flex flex-col p-4 space-y-4">
       <ul className="space-y-2">
         <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-orange-100">
           <FaTh className="text-orange-600" />
