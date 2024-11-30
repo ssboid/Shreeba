@@ -12,7 +12,7 @@ const Layout = () => {
         <div className="hidden lg:block lg:w-1/4 relative z-20 flex-shrink-0">
           <Sidebar />
         </div>
-        <div className="flex-grow ml-4 mr-8 w-full lg:w-3/4"> {/* Add left margin to create gap between Sidebar and Outlet */}
+        <div className="flex-grow ml-4 w-full lg:w-3/4"> {/* Add left margin to create gap between Sidebar and Outlet */}
           <Outlet />
         </div>
       </div>

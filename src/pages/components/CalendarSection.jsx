@@ -22,7 +22,7 @@ const CalendarSection = ({ purchaseDate, handleDateChange }) => {
         className="w-full p-2 border rounded-lg text-gray-800"
         value={purchaseDate}
         onChange={handleDateChange}
-        options={{ calenderLocale: "ne", valueLocale: "en" }}
+        options={{ calenderLocale: "en", valueLocale: "en" }}
       />
     </div>
   );

@@ -45,7 +45,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="">
       <Breadcrumb title="Add Item" links={breadcrumbLinks} />
       <div className="mt-6">
         <DynamicForm
