@@ -3,7 +3,7 @@ import LogoWhite from "../../assets/brand/logo-white.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-32 pt-24 mt-24">
+    <footer className="bg-gray-800 text-white py-32 pt-24 ">
       <div className="container mx-auto px-[8.33%] flex flex-col md:flex-row justify-between items-start space-y-8 md:space-y-0">
         
         {/* Logo and Description */}

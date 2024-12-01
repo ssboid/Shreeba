@@ -26,7 +26,7 @@ const Login = () => {
 
       if (user) {
         console.log("Login successful, navigating to /admin-dashboard");
-        navigate("/admin-dashboard");
+        navigate("/home");
       } else {
         console.log("Invalid username or password");
         alert("Invalid username or password");
