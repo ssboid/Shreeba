@@ -28,13 +28,13 @@ const Homepage = () => {
         div5Ref.current.scrollIntoView({ behavior: 'smooth' });
       }
     } else if (direction === 'up') {
-      if (div5Ref.current && window.scrollY >= div5Ref.current.offsetTop) {
+      if (div5Ref.current && window.scrollY >= div4Ref.current.offsetTop) {
         div4Ref.current.scrollIntoView({ behavior: 'smooth' });
-      } else if (div4Ref.current && window.scrollY >= div4Ref.current.offsetTop) {
+      } else if (div4Ref.current && window.scrollY >= div3Ref.current.offsetTop) {
         div3Ref.current.scrollIntoView({ behavior: 'smooth' });
-      } else if (div3Ref.current && window.scrollY >= div3Ref.current.offsetTop) {
+      } else if (div3Ref.current && window.scrollY >= div2Ref.current.offsetTop) {
         div2Ref.current.scrollIntoView({ behavior: 'smooth' });
-      } else if (div2Ref.current && window.scrollY >= div2Ref.current.offsetTop) {
+      } else if (div2Ref.current && window.scrollY >= div1Ref.current.offsetTop) {
         div1Ref.current.scrollIntoView({ behavior: 'smooth' });
       }
     }
