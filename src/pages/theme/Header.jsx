@@ -39,9 +39,9 @@ const Header = () => {
 
   return (
     <header
-      className={`flex items-center sticky ${scrollDirection === "down" ? "-top-24" : "top-0"} justify-between bg-secondary100 py-4 px-[8.33%] text-black border-b border-gray-200 relative transition-all duration-500`}
+      className={`flex items-center sticky ${scrollDirection === "down" ? "-top-24" : "top-0"} justify-between bg-secondary100 py-4 px-6 lg:px-[8.33%] text-black border-b border-gray-200 relative transition-all duration-500`}
     >
-    {/* <header className="flex items-center sticky top-0 justify-between bg-secondary100 py-4 px-[8.33%] text-black border-b border-gray-200 relative"> */}
+    {/* <header className="flex items-center sticky top-0 justify-between bg-secondary100 py-4 px-6 lg:px-[8.33%] text-black border-b border-gray-200 relative"> */}
       {/* Logo */}
       <Link to="/" className="flex items-center space-x-2">
         <img src={HeaderLogo} alt="Shreeba Collection Logo" className="h-12 w-auto" />
@@ -88,7 +88,7 @@ const Header = () => {
 
       {/* Mobile Menu - Vertical List */}
       {isMenuOpen && (
-        <div className="px-[8.33%] absolute top-16 left-0 w-full bg-secondary100 flex flex-col items-start p-4 space-y-4 sm:hidden">
+        <div className="px-6 lg:px-[8.33%] absolute top-16 left-0 w-full bg-secondary100 flex flex-col items-start p-4 py-8 space-y-6 sm:hidden">
           <Link to="/browse" className="flex items-center text-primaryOrange hover:text-gray-700 space-x-1">
             <FaThList />
             <span>Browse</span>
