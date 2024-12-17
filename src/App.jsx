@@ -8,6 +8,9 @@ import HomepageLayout from "./pages/theme/HomepageLayout";
 import ProductDetails from "./pages/ProductDetails";
 import Goods from "./pages/Goods";
 import Homepage from "./pages/Homepage";
+import Wholesalers from "./pages/Wholesalers";
+import Sales from "./pages/Sales";
+import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <div>
@@ -24,7 +27,14 @@ function App() {
 
           {/* Protected/Admin Routes within Layout */}
           <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/goods" element={<Goods />} />
+            
+            <Route path="/wholesalers" element={<Wholesalers/>} />
+            <Route path="/sales" element={<Sales/>} />
+
+
             <Route path="/product-details" element={<ProductDetails />} />
           </Route>
           

@@ -7,7 +7,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: "Dashboard", icon: <FaTh />, path: "/dashboard" },
+    { name: "Dashboard", icon: <FaTh className="text-orange-600" />, path: "/dashboard" },
     { name: "Goods", icon: <FaShoppingBag className="text-orange-600" />, path: "/goods" },
     { name: "Wholesalers", icon: <FaUsers className="text-orange-600" />, path: "/wholesalers" },
     { name: "Sales", icon: <FaChartLine className="text-orange-600" />, path: "/sales" },
