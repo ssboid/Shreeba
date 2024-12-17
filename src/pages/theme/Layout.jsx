@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div className="bg-secondary100 flex flex-col min-h-screen relative">
       <Header />
-      <div className="flex flex-grow mt-8 px-[8.33%]"> {/* Add top margin and horizontal padding */}
+      <div className="flex flex-grow my-8 px-[8.33%]"> {/* Add top margin and horizontal padding */}
         {/* Sidebar and Outlet in a single flex container */}
         <div className="hidden lg:block lg:w-1/4 relative z-20 flex-shrink-0">
           <Sidebar />
