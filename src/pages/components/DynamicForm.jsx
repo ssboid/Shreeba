@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Form from "@radix-ui/react-form";
 import { Checkbox, Grid, Text, Select } from "@radix-ui/themes";
 import CalendarSection from "./CalendarSection";
-
+import { getWholesalers } from "../../services/wholesalersApi";
+import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
+  const [wholesalers, setWholesalers] = useState([]);
+
   const [formData, setFormData] = useState({
     description: "",
     productCode: "",
@@ -13,6 +16,20 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     colors: [],
     sizes: []
   });
+
+  useEffect(() => {
+    // Fetch wholesalers data from API
+    const fetchWholesalers = async () => {
+      try {
+        const data = await getWholesalers();
+        setWholesalers(data); // Store wholesalers in state
+      } catch (error) {
+        console.error("Error fetching wholesalers:", error);
+      }
+    };
+
+    fetchWholesalers();
+  }, []);
 
   const handleDateChange = (date) => {
     setPurchaseDate(date);
@@ -40,6 +57,17 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
       };
     });
   };
+  const productCode = useGenerateItemCode(
+    formData.wholesalerName,
+    purchaseDate,
+    formData.costPrice,
+    formData.markedPrice,
+    formData.numberOfVariants
+  );
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, productCode }));
+  }, [productCode]);
 
   // Submit handler to display the form data
   const handleSubmit = (e) => {
@@ -160,9 +188,11 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
           >
             <Select.Trigger variant="surface" radius="full" />
             <Select.Content>
-              <Select.Item value="1">Wholesaler 1</Select.Item>
-              <Select.Item value="2">Wholesaler 2</Select.Item>
-              <Select.Item value="3">Wholesaler 3</Select.Item>
+              {wholesalers.map((wholesaler) => (
+                <Select.Item key={wholesaler.id} value={wholesaler.id}>
+                  {wholesaler.name}
+                </Select.Item>
+              ))}
             </Select.Content>
           </Select.Root>
         </Form.Field>

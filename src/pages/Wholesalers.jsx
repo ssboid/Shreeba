@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getWholesalers } from '../services/wholesalersApi';
 import { Table } from '@radix-ui/themes';
 import { Grid, List } from 'lucide-react';
 import WholesalerDialog from './components/WholesalerDialog';
@@ -6,26 +7,40 @@ import image from '../assets/brand/Cover.png';
 
 const Wholesalers = () => {
   const [isGridView, setIsGridView] = useState(false);
+  const [wholesalerData, setWholesalerData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const wholesalerData = [
-    {
-      sn: 1,
-      name: 'ABC Wholesalers',
-      code: 'WH-001',
-      contact: '9876543210',
-      address: 'Kathmandu, Nepal',
-      image: image,
-    },
-    {
-      sn: 2,
-      name: 'XYZ Wholesalers',
-      code: 'WH-002',
-      contact: '9801234567',
-      address: 'Lalitpur, Nepal',
-      image: image,
-    },
-    // Add more sample wholesalers as needed
-  ];
+  useEffect(() => {
+    // Fetch initial data
+    const fetchWholesalers = async () => {
+      try {
+        setLoading(true);
+        const data = await getWholesalers();
+        setWholesalerData(data);
+      } catch (err) {
+        console.error('Error fetching wholesalers:', err);
+        setError('Failed to load wholesalers. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWholesalers();
+  }, []);
+
+  const handleAddWholesaler = (newWholesaler) => {
+    // Add the new wholesaler to the current state
+    setWholesalerData((prevData) => [...prevData, newWholesaler]);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
     <div className="p-2">
@@ -42,15 +57,15 @@ const Wholesalers = () => {
       </div>
 
       {/* Add Dialog */}
-      <WholesalerDialog />
+      <WholesalerDialog onAddWholesaler={handleAddWholesaler} />
 
       {/* Conditional View */}
       {isGridView ? (
         <div className="grid md:grid-cols-3 gap-4">
-          {wholesalerData.map((wholesaler) => (
-            <div key={wholesaler.sn} className="border rounded-md p-4 shadow">
+          {wholesalerData.map((wholesaler, index) => (
+            <div key={wholesaler.id} className="border rounded-md p-4 shadow">
               <img
-                src={wholesaler.image}
+                src={image} // Replace with a real image URL if available
                 alt={wholesaler.name}
                 className="w-full h-32 object-cover rounded-md mb-2"
               />
@@ -68,25 +83,15 @@ const Wholesalers = () => {
               <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Code</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Contact</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Address</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Image</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {wholesalerData.map((wholesaler) => (
-              <Table.Row key={wholesaler.sn}>
-                <Table.RowHeaderCell>{wholesaler.sn}</Table.RowHeaderCell>
+            {wholesalerData.map((wholesaler, index) => (
+              <Table.Row key={wholesaler.id}>
+                <Table.RowHeaderCell>{index + 1}</Table.RowHeaderCell>
                 <Table.Cell>{wholesaler.name}</Table.Cell>
                 <Table.Cell>{wholesaler.code}</Table.Cell>
                 <Table.Cell>{wholesaler.contact}</Table.Cell>
-                <Table.Cell>{wholesaler.address}</Table.Cell>
-                <Table.Cell>
-                  <img
-                    src={wholesaler.image}
-                    alt="Wholesaler"
-                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                  />
-                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
