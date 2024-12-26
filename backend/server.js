@@ -3,6 +3,8 @@ const express = require('express');
 const pool = require('./db'); // Import the pool from db.js
 const userRoutes = require('./routes/userRoutes');
 const wholesalerRoutes = require('./routes/wholesalerRoutes');
+const goodsRoutes = require('./routes/goodsRoutes'); // Import the goods routes
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
@@ -18,6 +20,7 @@ app.use(express.json()); // Middleware to parse JSON requests
 // Use the /users route for user-related operations
 app.use('/users', userRoutes);
 app.use('/wholesalers', wholesalerRoutes);
+app.use('/goods', goodsRoutes); // Mount the goods routes
 
 // Example route to test the database connection
 app.get('/test', async (req, res) => {

@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
 import { Grid, List } from 'lucide-react';
 import image from '../assets/brand/Cover.png';
 import AddDialog from './components/AddDialog';
+import { getGoods } from '../services/goodsApi';
 
 const Goods = () => {
   const [isGridView, setIsGridView] = useState(true);
+  const [goodsData, setGoodsData] = useState([]);
+
+  useEffect(() => {
+    const fetchGoods = async () => {
+      try {
+        const data = await getGoods(); // Fetch goods data
+        setGoodsData(data); // Update the state with the fetched data
+        console.log("Goods fetched successfully:", data);
+      } catch (error) {
+        console.error("Error fetching goods:", error);
+      }
+    };
+
+    fetchGoods();
+  }, []);
+
   const sections = [
     {
       title: 'General Information',
@@ -34,20 +51,14 @@ const Goods = () => {
     onGenerate: () => console.log('Code generated'),
     onSave: () => console.log('Code saved manually'),
   };
-  const goodsData = [
-    {
-      sn: 1,
-      piececode: 'qqfqf2081-08-06',
-      piecetype: 'qqweqwe',
-      purchasedate: '2081-08-06',
-      costprice: 100,
-      markedprice: 150,
-      pieceavailable: true,
-      pieceimage: image,
-      wholesalercode: 'FA',
-    },
-    // Add more goods as needed
-  ];
+
+  // Function to generate wholesaler code from name
+  const getWholesalerCode = (name) => {
+    if (!name) return 'N/A'; // Return N/A if no name is provided
+    const parts = name.split(' ');
+    const initials = parts.map((part) => part.charAt(0).toUpperCase());
+    return initials.slice(0, 2).join(''); // Get the first two initials
+  };
 
   return (
     <div className="p-2">
@@ -61,22 +72,23 @@ const Goods = () => {
           {isGridView ? <List className="w-5 h-5" /> : <Grid className="w-5 h-5" />}
           {isGridView ? 'Switch to List View' : 'Switch to Grid View'}
         </button>
-
       </div>
       <AddDialog sections={sections} itemCodeActions={itemCodeActions} />
 
-
       {isGridView ? (
         <div className="grid md:grid-cols-3 gap-4">
-          {goodsData.map((item) => (
-            <div key={item.sn} className="border rounded-md p-4 shadow">
+          {goodsData.map((item, index) => (
+            <div key={index} className="border rounded-md p-4 shadow">
               <img
-                src={item.pieceimage}
-                alt={item.piecetype}
+                src={item.pieceimage || image}
+                alt={item.name}
                 className="w-full h-32 object-cover rounded-md mb-2"
               />
-              <h2 className="font-semibold text-lg">{item.piececode}</h2>
+              <h1 className="font-semibold text-lg">{item.name}</h1>
+
+              <h2 className="font-semibold text-md">{item.productcode}</h2>
               <p className="text-gray-500">Marked Price: ${item.markedprice}</p>
+              <p className="text-gray-500">Wholesaler Code: {getWholesalerCode(item.wholesalername)}</p>
             </div>
           ))}
         </div>
@@ -86,7 +98,7 @@ const Goods = () => {
             <Table.Row>
               <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Piece Code</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Piece Type</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Piece Name</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Purchase Date</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Cost Price</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Marked Price</Table.ColumnHeaderCell>
@@ -96,23 +108,23 @@ const Goods = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {goodsData.map((item) => (
-              <Table.Row key={item.sn}>
-                <Table.RowHeaderCell>{item.sn}</Table.RowHeaderCell>
-                <Table.Cell>{item.piececode}</Table.Cell>
-                <Table.Cell>{item.piecetype}</Table.Cell>
+            {goodsData.map((item, index) => (
+              <Table.Row key={index}>
+                <Table.RowHeaderCell>{index + 1}</Table.RowHeaderCell>
+                <Table.Cell>{item.productcode}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
                 <Table.Cell>{item.purchasedate}</Table.Cell>
                 <Table.Cell>{item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
                 <Table.Cell>{item.pieceavailable ? 'Yes' : 'No'}</Table.Cell>
                 <Table.Cell>
-                <img
-                  src={image}
-                  alt="Piece"
-                  style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                />
+                  <img
+                    src={item.pieceimage || image}
+                    alt="Piece"
+                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                  />
                 </Table.Cell>
-                <Table.Cell>{item.wholesalercode}</Table.Cell>
+                <Table.Cell>{getWholesalerCode(item.wholesalername)}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

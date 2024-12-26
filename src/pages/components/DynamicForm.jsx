@@ -3,18 +3,22 @@ import * as Form from "@radix-ui/react-form";
 import { Checkbox, Grid, Text, Select } from "@radix-ui/themes";
 import CalendarSection from "./CalendarSection";
 import { getWholesalers } from "../../services/wholesalersApi";
-
+import useGenerateItemCode from "../../hooks/useGenerateItemCode";
+import { addGood } from "../../services/goodsApi";
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
   const [wholesalers, setWholesalers] = useState([]);
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+
+  const { generateCode } = useGenerateItemCode(); // Use the hook
 
   const [formData, setFormData] = useState({
     description: "",
     productCode: "",
     wholesalerName: "", // Default value
-    numberOfVariants: "",
-    colors: [],
+    numItems: "",
     sizes: [],
+    colors: [],
   });
   const sizes = ["S", "M", "L", "XL", "2XL"]; // Define the sizes array here
   const handleSizeChange = (size, isChecked) => {
@@ -23,16 +27,35 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         ? [...(prev.sizes || []), size] // Add size if checked
         : (prev.sizes || []).filter((s) => s !== size); // Remove size if unchecked
   
-      const lastSelectedSize = updatedSizes.length > 0 ? updatedSizes[updatedSizes.length - 1] : ""; // Get the last selected size or empty
-  
       console.log("Selected Sizes:", updatedSizes); // Log the updated sizes
   
       return {
         ...prev,
-        size: lastSelectedSize, // Update the `size` field with the last selected size
+        sizes: updatedSizes, // Update only the `sizes` field
       };
     });
   };
+  
+
+  const colors = [
+    { name: "Indigo", colorCode: "#5A67D8" },
+    { name: "Cyan", colorCode: "#38B2AC" },
+    { name: "Orange", colorCode: "#ED8936" },
+    { name: "Crimson", colorCode: "#E53E3E" },
+    { name: "Gray", colorCode: "#A0AEC0" },
+  ];
+  
+  const handleColorChange = (color, isChecked) => {
+    setFormData((prev) => {
+      const updatedColors = isChecked
+        ? [...(prev.colors || []), color] // Add color if checked
+        : (prev.colors || []).filter((c) => c !== color); // Remove color if unchecked
+  
+      console.log("Selected Colors:", updatedColors); // Log the updated colors
+      return { ...prev, colors: updatedColors }; // Only update `colors`
+    });
+  };
+  
   
   
   const handleDateChange = (date) => {
@@ -54,14 +77,43 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   }, [sections]); // Run whenever sections prop changes
 
   const bundleData = () => {
+    const { color, ...rest } = formData; // Exclude `color`
+
     const bundledData = {
-      ...formData, // Spread the entire formData object
+      
+      ...rest, // Spread the entire formData object
       purchaseDate, // Add additional state fields like purchaseDate
     };
+    alert(`Bundled Data:\n${JSON.stringify(bundledData, null, 2)}`);
 
     console.log("Bundled Data:", bundledData);
+    return bundledData; // Return bundled data for further use
+
   };
 
+
+  const handleGenerateCode = () => {
+    const bundledData = bundleData(); // Get the bundled data
+    console.log("Bundled Data for Code Generation:", bundledData); // Log bundled data
+    
+    const productCode = generateCode(
+      bundledData.wholesalerName,
+      bundledData.purchaseDate,
+      bundledData.costPrice,
+      bundledData.markedPrice,
+      bundledData.numItems
+    ); // Generate the code
+    
+    if (productCode) {
+      console.log("Successfully Generated Product Code:", productCode); // Log the product code
+    } else {
+      console.log("Failed to Generate Product Code. Check Input Data."); // Log failure
+    }
+    
+    // Update the formData with the generated product code
+    setFormData((prev) => ({ ...prev, productCode }));
+  };
+  
   useEffect(() => {
     // Fetch wholesalers data from API
     const fetchWholesalers = async () => {
@@ -77,6 +129,38 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     fetchWholesalers();
   }, []);
 
+  const handleSaveManualCode = () => {
+    if (formData.productCode) {
+      console.log("Manual Code Saved:", formData.productCode); // Log the updated code
+      alert(`Manual Code Saved: ${formData.productCode}`); // Alert the user
+    } else {
+      console.log("Product code is empty. Nothing to save."); // Log empty case
+      alert("Please enter a product code to save.");
+    }
+  };
+  useEffect(() => {
+    const submitData = async () => {
+      if (!shouldSubmit) return;
+  
+      const bundledData = bundleData(); // Prepare the data to send
+      console.log("Submitting data:", bundledData);
+  
+      try {
+        const response = await addGood(bundledData); // Call the API
+        console.log("Good added successfully:", response); // Log success
+        alert("Good added successfully!");
+      } catch (error) {
+        console.error("Error adding good:", error); // Log error
+        alert("An error occurred while adding the good.");
+      } finally {
+        setShouldSubmit(false); // Reset submission trigger
+      }
+    };
+  
+    submitData();
+  }, [shouldSubmit]); // Trigger when `shouldSubmit` changes
+
+ 
   return (
     <Form.Root className="p-6 bg-white space-y-6">
       {/* Sticky Add Item Header */}
@@ -97,11 +181,12 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             Cancel
           </button>
           <button
-            type="submit"
-            className="px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-600"
-          >
-            Submit
-          </button>
+  onClick={() => setShouldSubmit(true)} // Trigger submission
+  className="px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-600"
+>
+  Click
+</button>
+
         </div>
       </div>
 
@@ -253,7 +338,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         </h2>
 
         {/* Number of Variants Field */}
-        <Form.Field className="mb-4" name="numberOfVariants">
+        <Form.Field className="mb-4" name="numItems">
           <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
             Number of Variants
           </Form.Label>
@@ -262,59 +347,34 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               className="w-full h-10 p-2 border rounded-lg text-gray-800"
               type="number"
               placeholder="Enter number of variants"
-              value={formData.color || ""} // Bind to formData
+              value={formData.numItems || ""} // Bind to formData
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, color: e.target.value }))
+                setFormData((prev) => ({ ...prev, numItems: e.target.value }))
               }
               
             />
           </Form.Control>
         </Form.Field>
 
-        {/* Colors Section */}
-        <div className="mb-6">
-          <h3 className="text-md font-semibold mb-2">Colors</h3>
-          <Grid columns="5" display="inline-grid" gap="2">
-            <div className="flex items-center gap-2">
-              <Checkbox color="indigo" />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: "#5A67D8" }} // Indigo color
-              ></div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox color="cyan" />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: "#38B2AC" }} // Cyan color
-              ></div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox color="orange" />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: "#ED8936" }} // Orange color
-              ></div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox color="crimson" />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: "#E53E3E" }} // Crimson color
-              ></div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox color="gray" />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: "#A0AEC0" }} // Gray color
-              ></div>
-            </div>
-          </Grid>
-        </div>
+       {/* Colors Section */}
+<div className="mb-6">
+  <h3 className="text-md font-semibold mb-2">Colors</h3>
+  <Grid columns="5" display="inline-grid" gap="2">
+    {colors.map(({ name, colorCode }) => (
+      <div key={name} className="flex items-center gap-2">
+        <Checkbox
+          checked={formData.colors && formData.colors.includes(name)} // Check if the color is already selected
+          onCheckedChange={(isChecked) => handleColorChange(name, isChecked)} // Handle change
+        />
+        <div
+          className="w-4 h-4 rounded-full"
+          style={{ backgroundColor: colorCode }}
+        ></div>
+      </div>
+    ))}
+  </Grid>
+</div>
 
-       {/* Sizes Section */}
-{/* Sizes Section */}
 {/* Sizes Section */}
 <div>
   <h3 className="text-md font-semibold mb-2">Sizes</h3>
@@ -322,7 +382,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     {sizes.map((size) => (
       <div key={size} className="flex items-center gap-2">
         <Checkbox
-          checked={formData.sizes && formData.sizes.indexOf(size) > -1} // Safely access sizes
+          checked={formData.sizes?.includes(size)} // Safely check if the size is selected
           onCheckedChange={(isChecked) => handleSizeChange(size, isChecked)} // Handle change
         />
         <Text>{size}</Text>
@@ -332,37 +392,44 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 </div>
 
 
+
       </div>
 
-      {/* Item Code Section */}
-      <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">Item Code</h2>
-        <div className="flex items-center gap-4 mt-4">
-          <Form.Field name="productCode" className="flex-grow">
-            <Form.Control asChild>
-              <input
-                type="text"
-                className="w-full p-2 border rounded-lg text-gray-800"
-                placeholder="Code here..."
-              />
-            </Form.Control>
-          </Form.Field>
-          <button
-            type="button"
-            className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
-            onClick={itemCodeActions.onGenerate}
-          >
-            Generate Code
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
-            onClick={bundleData} // Call the function here
-          >
-            Save Manual
-          </button>
-        </div>
-      </div>
+   {/* Item Code Section */}
+<div className="p-4 border rounded-md shadow-sm bg-gray-50">
+  <h2 className="mb-4 text-lg font-semibold text-gray-800">Item Code</h2>
+  <div className="flex items-center gap-4 mt-4">
+    <Form.Field name="productCode" className="flex-grow">
+      <Form.Control asChild>
+        <input
+          type="text"
+          className="w-full p-2 border rounded-lg text-gray-800"
+          placeholder="Code here..."
+          value={formData.productCode || ""} // Bind to formData
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, productCode: e.target.value }))
+          } // Allow manual editing
+        />
+      </Form.Control>
+    </Form.Field>
+    <button
+      type="button"
+      className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
+      onClick={handleGenerateCode} // Trigger code generation
+    >
+      Generate Code
+    </button>
+    <button
+      type="button"
+      className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
+      onClick={handleSaveManualCode} // Trigger manual save
+    >
+      Save Manual
+    </button>
+  </div>
+</div>
+
+
     </Form.Root>
   );
 };
