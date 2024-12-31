@@ -1,7 +1,7 @@
 # Shreeba
 
 Greetings my friend.
-This is a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a my repo for FYP of an extremely target use focused features of inventory and sales tracking webapp.
 
 Coding makes me religious.
 
