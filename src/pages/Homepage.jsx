@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import BannerIso from "../assets/home/banneriso.png";
 
 const Homepage = () => {
   // Refs to each div
@@ -64,38 +65,40 @@ const Homepage = () => {
       onWheel={handleScroll} // Listen for scroll wheel events
     >
       {/* Div1 */}
-<div
-  ref={div1Ref}
-  className="h-screen w-full bg-sky-100 flex flex-col md:flex-row items-center justify-center"
->
-  <div className="h-screen md:h-full w-full md:w-1/2  flex flex-col p-6 xl:p-[8.33%] items-start justify-start space-y-12">
-    <h1 className="text-5xl">Easy Inventory Management</h1>
-    <span className="w-2/3">Manage your store easily. Add, edit, and track items with a few clicks. Log in now and simplify your work today!</span>
-    <button
-              type="button"
-              className="bg-primaryOrange text-white rounded-full px-4 py-2 hover:bg-opacity-90"
-            >
-              Get Started
-            </button>
-  </div>
-  <div className="h-screen md:h-full w-full md:w-1/2 bg-blue-500 flex items-center justify-center">
-    <h1 className="text-5xl">1B</h1>
-  </div>
-</div>
+      <div
+        ref={div1Ref}
+        className="h-screen w-full bg-sky-100 flex flex-col md:flex-row items-center justify-center"
+      >
+        <div className=" md:h-full w-full md:w-1/2  flex flex-col p-6 xl:p-[8.33%] xl:py-[12%] items-start justify-start space-y-12">
+          <h1 className="text-5xl">Easy Inventory Management</h1>
+          <span className="w-2/3">
+            Manage your store easily. Add, edit, and track items with a few
+            clicks. Log in now and simplify your work today!
+          </span>
+          <button
+            type="button"
+            className="bg-primaryOrange text-white rounded-full px-4 py-2 hover:bg-opacity-90"
+          >
+            Get Started
+          </button>
+        </div>
+        <div className="h-screen md:h-full w-full md:w-1/2 flex items-start justify-start px-4 pr-12 xl:py-[3.5%]">
+          <img src={BannerIso} className="select-none" />
+        </div>
+      </div>
 
-{/* Div2 */}
-<div
-  ref={div2Ref}
-  className="h-screen w-full bg-sky-200 flex flex-col md:flex-row items-center justify-center"
->
-  <div className="h-screen md:h-full w-full md:w-1/2 bg-green-300 flex items-center justify-center">
-    <h1 className="text-5xl">2A</h1>
-  </div>
-  <div className="hidden md:flex h-screen md:h-full w-full md:w-1/2 bg-green-500 items-center justify-center">
-    <h1 className="text-5xl">2B</h1>
-  </div>
-</div>
-
+      {/* Div2 */}
+      <div
+        ref={div2Ref}
+        className="h-screen w-full bg-sky-200 flex flex-col md:flex-row items-center justify-center"
+      >
+        <div className="h-screen md:h-full w-full md:w-1/2 bg-green-300 flex items-center justify-center">
+          <h1 className="text-5xl">2A</h1>
+        </div>
+        <div className="hidden md:flex h-screen md:h-full w-full md:w-1/2 bg-green-500 items-center justify-center">
+          <h1 className="text-5xl">2B</h1>
+        </div>
+      </div>
 
       {/* Div3 */}
       <div
