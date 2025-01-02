@@ -11,6 +11,7 @@ import Homepage from "./pages/Homepage";
 import Wholesalers from "./pages/Wholesalers";
 import Sales from "./pages/Sales";
 import Dashboard from "./pages/Dashboard";
+import Help from "./pages/Help";
 function App() {
   return (
     <div>
@@ -33,6 +34,8 @@ function App() {
             
             <Route path="/wholesalers" element={<Wholesalers/>} />
             <Route path="/sales" element={<Sales/>} />
+            <Route path="/help" element={<Help/>} />
+
 
 
             <Route path="/product-details" element={<ProductDetails />} />
