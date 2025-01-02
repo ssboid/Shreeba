@@ -14,6 +14,13 @@ export default {
         secondary100: '#FAFAEE',
         
       },
+
+      fontFamily: {
+        heading: ['Roboto', 'sans-serif'], // Heading font
+        body: ['Nunito Sans', 'sans-serif'], // Body font
+      },
+
+      
       spacing: {
         '72': '18rem',  // 72px spacing
         '80': '20rem',  // 80px spacing

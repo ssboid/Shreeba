@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
+    "@fontsource/nunito-sans": "^5.1.1",
+    "@fontsource/roboto": "^5.1.1",
     "@radix-ui/react-form": "^0.1.0",
     "@radix-ui/themes": "^3.1.6",
     "axios": "^1.7.9",
     "compromise": "^14.14.2",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "lucide-react": "^0.468.0",
     "nepali-datepicker-reactjs": "^1.1.7",
     "outlet": "^0.1.5",

@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex items-center sticky ${scrollDirection === "down" ? "-top-24" : "top-0"} justify-between bg-secondary100 py-4 px-6 lg:px-[8.33%] text-black border-b border-gray-200 relative transition-all duration-500`}
+      className={`flex items-center sticky ${scrollDirection === "down" ? "-top-24" : "top-0"} justify-between bg-white py-4 px-6 lg:px-[8.33%] text-black border-b border-gray-200 relative transition-all duration-500`}
     >
     {/* <header className="flex items-center sticky top-0 justify-between bg-secondary100 py-4 px-6 lg:px-[8.33%] text-black border-b border-gray-200 relative"> */}
       {/* Logo */}
