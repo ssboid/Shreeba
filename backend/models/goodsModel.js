@@ -4,10 +4,10 @@ const pool = require('../db');
 const addGood = async (goods) => {
     const query = `
       INSERT INTO goods (
-        name, description, costprice, markedprice, size, wholesalername,
+        name, description, costprice, markedprice, wholesalername,
         numitems, productcode, colors, sizes, purchasedate
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
       )
       RETURNING *;
     `;
@@ -17,7 +17,6 @@ const addGood = async (goods) => {
       goods.description,
       goods.costPrice,
       goods.markedPrice,
-      goods.size,
       goods.wholesalerName,
       goods.numItems,
       goods.productCode, // Correct handling of productCode

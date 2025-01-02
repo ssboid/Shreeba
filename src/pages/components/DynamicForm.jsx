@@ -84,7 +84,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
       ...rest, // Spread the entire formData object
       purchaseDate, // Add additional state fields like purchaseDate
     };
-    alert(`Bundled Data:\n${JSON.stringify(bundledData, null, 2)}`);
+    // alert(`Bundled Data:\n${JSON.stringify(bundledData, null, 2)}`);
 
     console.log("Bundled Data:", bundledData);
     return bundledData; // Return bundled data for further use
@@ -132,10 +132,10 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const handleSaveManualCode = () => {
     if (formData.productCode) {
       console.log("Manual Code Saved:", formData.productCode); // Log the updated code
-      alert(`Manual Code Saved: ${formData.productCode}`); // Alert the user
+      // alert(`Manual Code Saved: ${formData.productCode}`); 
     } else {
       console.log("Product code is empty. Nothing to save."); // Log empty case
-      alert("Please enter a product code to save.");
+      // alert("Please enter a product code to save.");
     }
   };
   useEffect(() => {
@@ -148,7 +148,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
       try {
         const response = await addGood(bundledData); // Call the API
         console.log("Good added successfully:", response); // Log success
-        alert("Good added successfully!");
+        // alert("Good added successfully!");
       } catch (error) {
         console.error("Error adding good:", error); // Log error
         alert("An error occurred while adding the good.");
@@ -184,7 +184,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   onClick={() => setShouldSubmit(true)} // Trigger submission
   className="px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-600"
 >
-  Click
+  Submit
 </button>
 
         </div>
