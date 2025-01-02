@@ -19,11 +19,11 @@ function App() {
 
       <Routes>
           {/* Public Route */}
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           
           {/* Homepage with Header and Footer only */}
           <Route element={<HomepageLayout />}>
-            <Route path="/home" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
           </Route>
 
           {/* Protected/Admin Routes within Layout */}
