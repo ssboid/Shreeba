@@ -21,6 +21,7 @@
     "cloudinary-core": "^2.13.1",
     "compromise": "^14.14.2",
     "dotenv": "^16.4.7",
+    "framer-motion": "^11.15.0",
     "lucide-react": "^0.468.0",
     "nepali-datepicker-reactjs": "^1.1.7",
     "outlet": "^0.1.5",

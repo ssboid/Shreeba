@@ -1,5 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import BannerIso from "../assets/home/banneriso.png";
+import SalesImg from "../assets/home/sale.png";
+import DataImg from "../assets/home/data.png";
+import Teach from "/src/assets/home/support/1.JPG";
+import Billy from "/src/assets/home/support/2.JPG";
+import Asclep from "/src/assets/home/support/3.jpg";
+
 import {
   FaPencilAlt,
   FaTrashAlt,
@@ -16,6 +23,10 @@ const Homepage = () => {
   const div3Ref = useRef(null);
   const div4Ref = useRef(null);
   const div5Ref = useRef(null);
+
+  const [hovered1, setHovered1] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
+  const [hovered3, setHovered3] = useState(false);
 
   // Handle the scroll event
   const handleScroll = (e) => {
@@ -125,11 +136,11 @@ const Homepage = () => {
         <div className=" md:flex md:h-full w-full md:w-1/2 items-center xl:p-[8.33%] justify-center px-24 lg:px-32">
           <div className="flex  space-x-8 w-full justify-center ">
             <div className="flex mx-6 lg:mx-0 space-x-4 justify-center">
-              <div className="bg-black lg:w-52 lg:h-96 flex items-center justify-center mt-16 rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
-                QW
+              <div className="bg-white lg:w-52 lg:h-96 flex items-center justify-center mt-16 rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
+                <img src={SalesImg} className="select-none" />
               </div>
               <div className="bg-white lg:w-52 lg:h-96 flex items-center justify-center mb-16 rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
-                EQ
+                <img src={DataImg} className="select-none" />
               </div>
             </div>
           </div>
@@ -214,26 +225,115 @@ const Homepage = () => {
       {/* Div4 */}
       <div
         ref={div4Ref}
-        className="bg-orange-100 lg:min-h-screen space-y-16 w-full flex flex-col flex p-6 xl:p-[8.33%] py-12 pb-16 lg:py-0 "
+        className="bg-orange-100  space-y-16 w-full flex flex-col p-6 xl:p-[8.33%] py-12 pb-16 lg:py-0"
       >
         <div className="space-y-2">
           <span className="text-primaryOrange">WE'RE HERE TO HELP</span>
           <h2 className="flex flex-col font-heading font-bold text-primary1000 text-4xl space-y-2">
             <div>Stuck Somewhere?</div>
-            <div>Contact our team!</div>
+            <div>Contact our Support!</div>
           </h2>
         </div>
         <div>
-          <div className="flex flex-col lg:flex-row lg:mx-0 lg:space-x-4 space-y-16 lg:space-y-0 lg:w-full lg:justify-evenly">
-            <div className="bg-black lg:w-52 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
-              QW
-            </div>
-            <div className="bg-white lg:w-52 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
-              EQ
-            </div>
-            <div className="bg-black lg:w-52 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-40 h-72">
-              QW
-            </div>
+          <div className="flex flex-col items-center justify-center lg:flex-row lg:mx-0 lg:space-x-4 space-y-16 lg:space-y-0 lg:w-full lg:justify-evenly">
+            {/* Teach Image */}
+            <motion.div
+              className="relative bg-black lg:w-72 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-64 h-72 overflow-hidden"
+              onMouseEnter={() => setHovered1(true)}
+              onMouseLeave={() => setHovered1(false)}
+            >
+              <img src={Teach} className="w-full h-full object-cover" />
+              {/* Overlay */}
+              <motion.div
+                className="absolute inset-0 bg-gray-800 rounded-full bg-opacity-80 flex items-center justify-center text-white z-10"
+                initial={{ y: "100%" }}
+                animate={{ y: hovered1 ? "0%" : "100%" }}
+                transition={{ type: "spring", stiffness: 150, damping: 25 }}
+              >
+                <div className="font-body p-6 text-xl flex flex-col space-y-8 text-center">
+                  <div className="font-bold">Edward Teach</div>
+                  <div>
+                    <a href="tel:+9812345678" className="hover:underline">
+                      981 234 5678
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="mailto:ed.teach@email.com"
+                      className="hover:underline"
+                    >
+                      ed.teach@email.com
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Billy Image */}
+            <motion.div
+              className="relative bg-white lg:w-72 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-64 h-72 overflow-hidden"
+              onMouseEnter={() => setHovered2(true)}
+              onMouseLeave={() => setHovered2(false)}
+            >
+              <img src={Billy} className="w-full h-full object-cover" />
+              {/* Overlay */}
+              <motion.div
+                className="absolute inset-0 bg-gray-800 rounded-full bg-opacity-80 flex items-center justify-center text-white z-10"
+                initial={{ y: "100%" }}
+                animate={{ y: hovered2 ? "0%" : "100%" }}
+                transition={{ type: "spring", stiffness: 150, damping: 25 }}
+              >
+                <div className="font-body p-6 text-xl flex flex-col space-y-8 text-center">
+                  <div className="font-bold">Barnes Billy</div>
+                  <div>
+                    <a href="tel:+9813456789" className="hover:underline">
+                      981 345 6789
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="mailto:barnbill@email.com"
+                      className="hover:underline"
+                    >
+                      barnbill@email.com
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Asclep Image */}
+            <motion.div
+              className="relative bg-black lg:w-72 lg:h-96 flex items-center justify-center rounded-full shadow-[0_16px_0_var(--tw-shadow-color)] shadow-primaryOrange w-64 h-72 overflow-hidden"
+              onMouseEnter={() => setHovered3(true)}
+              onMouseLeave={() => setHovered3(false)}
+            >
+              <img src={Asclep} className="w-full h-full object-cover" />
+              {/* Overlay */}
+              <motion.div
+                className="absolute inset-0 bg-gray-800 rounded-full bg-opacity-80 flex items-center justify-center text-white z-10"
+                initial={{ y: "100%" }}
+                animate={{ y: hovered3 ? "0%" : "100%" }}
+                transition={{ type: "spring", stiffness: 150, damping: 25 }}
+              >
+                <div className="font-body p-6 text-xl flex flex-col space-y-8 text-center">
+                  <div className="font-bold">Aron Asclep</div>
+                  <div>
+                    <a href="tel:+9818765432" className="hover:underline">
+                      981 876 5432
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="mailto:edward.teach@email.com"
+                      className="hover:underline"
+                    >
+                      edward.teach@email.com
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
