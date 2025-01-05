@@ -121,86 +121,49 @@ const Goods = () => {
 
   const sections = [
     {
-      title: "General Information",
+      title: 'General Information',
       fields: [
-        {
-          name: "name",
-          label: "Name",
-          type: "text",
-          placeholder: "Enter item name",
-          required: true,
-        },
-        {
-          name: "description",
-          label: "Description",
-          type: "textarea",
-          placeholder: "Enter description",
-        },
+        { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter item name', required: true },
+        { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Enter description' },
       ],
     },
     {
-      title: "Wholesaler & Pricing",
+      title: 'Wholesaler & Pricing',
       fields: [
-        {
-          name: "costPrice",
-          label: "Cost Price",
-          type: "number",
-          placeholder: "Enter cost price",
-          required: true,
-        },
-        {
-          name: "markedPrice",
-          label: "Marked Price",
-          type: "number",
-          placeholder: "Enter marked price",
-          required: true,
-        },
+        { name: 'costPrice', label: 'Cost Price', type: 'number', placeholder: 'Enter cost price', required: true },
+        { name: 'markedPrice', label: 'Marked Price', type: 'number', placeholder: 'Enter marked price', required: true },
       ],
     },
     {
-      title: "Variants",
+      title: 'Variants',
       fields: [
-        {
-          name: "color",
-          label: "Color",
-          type: "text",
-          placeholder: "Enter color",
-        },
-        {
-          name: "size",
-          label: "Size",
-          type: "text",
-          placeholder: "Enter size",
-        },
+        { name: 'color', label: 'Color', type: 'text', placeholder: 'Enter color' },
+        { name: 'size', label: 'Size', type: 'text', placeholder: 'Enter size' },
       ],
     },
   ];
 
   return (
     <div className="p-2">
-      <div className="flex flex-col space-y-8 mb-4">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Goods Inventory</h1>
         <button
           className="flex items-center gap-2 py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
           onClick={() => setIsGridView((prev) => !prev)}
         >
-          {isGridView ? (
-            <List className="w-5 h-5" />
-          ) : (
-            <Grid className="w-5 h-5" />
-          )}
-          {/* {isGridView ? "Switch to List View" : "Switch to Grid View"} */}
+          {isGridView ? <List className="w-5 h-5" /> : <Grid className="w-5 h-5" />}
+          {isGridView ? 'Switch to List View' : 'Switch to Grid View'}
         </button>
       </div>
 
       <AddDialog sections={sections} />
 
-      <div className="mb-4 flex items-center gap-4">
+      <div className="mb-4 mt-4 flex items-center gap-4">
         <button
           className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
           onClick={handleSortChange}
         >
-          Sort by {sortOrder === 'newest' ? 'Oldest' : 'Newest'}
+          Sort by {sortOrder === 'newest' ? 'Newest' : 'Oldest'}
         </button>
         <select
           className="py-2 px-4 border rounded-md"
@@ -249,10 +212,7 @@ const Goods = () => {
       ))}
     </div>
       ) : (
-        <Table.Root
-          variant="surface"
-          className="w-full border border-gray-300 rounded-md shadow-md"
-        >
+        <Table.Root variant="surface" className="w-full border border-gray-300 rounded-md shadow-md">
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
@@ -280,7 +240,7 @@ const Goods = () => {
 </Table.Cell>                <Table.Cell>{item.purchasedate}</Table.Cell>
                 <Table.Cell>{item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
-                <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell>
+                <Table.Cell>{item.pieceavailable ? 'Yes' : 'No'}</Table.Cell>
                 <Table.Cell>
                   <div className="relative">
                     <button

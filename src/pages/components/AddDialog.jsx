@@ -12,7 +12,7 @@ const AddDialog = ({ sections, itemCodeActions }) => {
             cursor: 'pointer'
           }}
         >
-          Add
+          Add Goods
         </Button>
       </Dialog.Trigger>
 
