@@ -156,7 +156,7 @@ const Goods = () => {
               <img
                 src={item.pieceimage || image}
                 alt={item.name}
-                className="w-full h-32 object-cover rounded-md mb-2"
+                className="w-full h-64 object-cover rounded-md mb-2"
               />
               <h1 className="font-semibold text-lg">{item.name}</h1>
 
