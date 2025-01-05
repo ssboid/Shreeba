@@ -145,7 +145,7 @@ const Goods = () => {
           ) : (
             <Grid className="w-5 h-5" />
           )}
-          {isGridView ? "Switch to List View" : "Switch to Grid View"}
+          {/* {isGridView ? "Switch to List View" : "Switch to Grid View"} */}
         </button>
       </div>
 
