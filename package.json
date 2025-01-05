@@ -12,8 +12,8 @@
   "dependencies": {
     "@radix-ui/react-form": "^0.1.0",
     "@radix-ui/themes": "^3.1.6",
-    "axios": "^1.7.7",
-    "cloudinary": "^2.5.1",
+    "apexcharts": "^4.3.0",
+    "axios": "^1.7.9",
     "cloudinary-core": "^2.13.1",
     "compromise": "^14.14.2",
     "dotenv": "^16.4.7",
