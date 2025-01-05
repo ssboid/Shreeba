@@ -8,7 +8,7 @@ const AddDialog = ({ sections, itemCodeActions }) => {
       <Dialog.Trigger >
         <Button radius="full"  variant="outline" className="mb-4 border-orange-500 pointer"
          style={{
-            marginBottom: '20px',
+            
             cursor: 'pointer'
           }}
         >

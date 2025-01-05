@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Table } from '@radix-ui/themes';
-import { Grid, List } from 'lucide-react';
-import image from '../assets/brand/Cover.png';
-import AddDialog from './components/AddDialog';
-import { getGoods } from '../services/goodsApi';
+import React, { useState, useEffect } from "react";
+import { Table } from "@radix-ui/themes";
+import { Grid, List } from "lucide-react";
+import image from "../assets/brand/Cover.png";
+import AddDialog from "./components/AddDialog";
+import { getGoods } from "../services/goodsApi";
+import MultiSelect from "../../MultiSelect";
 
 const Goods = () => {
   const [isGridView, setIsGridView] = useState(true);
@@ -25,60 +26,133 @@ const Goods = () => {
 
   const sections = [
     {
-      title: 'General Information',
+      title: "General Information",
       fields: [
-        { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter item name', required: true },
-        { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Enter description' },
+        {
+          name: "name",
+          label: "Name",
+          type: "text",
+          placeholder: "Enter item name",
+          required: true,
+        },
+        {
+          name: "description",
+          label: "Description",
+          type: "textarea",
+          placeholder: "Enter description",
+        },
       ],
     },
     {
-      title: 'Wholesaler & Pricing',
+      title: "Wholesaler & Pricing",
       fields: [
-        { name: 'costPrice', label: 'Cost Price', type: 'number', placeholder: 'Enter cost price', required: true },
-        { name: 'markedPrice', label: 'Marked Price', type: 'number', placeholder: 'Enter marked price', required: true },
+        {
+          name: "costPrice",
+          label: "Cost Price",
+          type: "number",
+          placeholder: "Enter cost price",
+          required: true,
+        },
+        {
+          name: "markedPrice",
+          label: "Marked Price",
+          type: "number",
+          placeholder: "Enter marked price",
+          required: true,
+        },
       ],
     },
     {
-      title: 'Variants',
+      title: "Variants",
       fields: [
-        { name: 'color', label: 'Color', type: 'text', placeholder: 'Enter color' },
-        { name: 'size', label: 'Size', type: 'text', placeholder: 'Enter size' },
+        {
+          name: "color",
+          label: "Color",
+          type: "text",
+          placeholder: "Enter color",
+        },
+        {
+          name: "size",
+          label: "Size",
+          type: "text",
+          placeholder: "Enter size",
+        },
       ],
     },
   ];
 
   const itemCodeActions = {
-    onGenerate: () => console.log('Code generated'),
-    onSave: () => console.log('Code saved manually'),
+    onGenerate: () => console.log("Code generated"),
+    onSave: () => console.log("Code saved manually"),
   };
 
   // Function to generate wholesaler code from name
   const getWholesalerCode = (name) => {
-    if (!name) return 'N/A'; // Return N/A if no name is provided
-    const parts = name.split(' ');
+    if (!name) return "N/A"; // Return N/A if no name is provided
+    const parts = name.split(" ");
     const initials = parts.map((part) => part.charAt(0).toUpperCase());
-    return initials.slice(0, 2).join(''); // Get the first two initials
+    return initials.slice(0, 2).join(""); // Get the first two initials
   };
+  //for multi select
+  const availability = ["Yes", "No"];
+  const price = ["1", "2", "3", "4"];
+  const type = ["kurta", "piece", "tops", "sweaters", "leggings"];
 
   return (
     <div className="p-2">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col space-y-8 mb-4">
         <h1 className="text-xl font-bold">Goods Inventory</h1>
+        <div className="border bg-white w-full rounded-md shadow p-4 mb-4 gap-4 flex flex-col justify-between items-center">
+          <div className="flex flex-col lg:flex-row w-full space-y-2 lg:space-y-0 lg:space-x-4">
+            <div className="border border-gray-400 lg:w-1/2 rounded-md p-2">
+              <p>Availability</p>
+            </div>
+            <div className="border border-gray-400 lg:w-3/4 rounded-md p-2">
+              <p>Price</p>
+            </div>
+            <div className="border border-gray-400 lg:w-3/4 rounded-md p-2">
+              <p>Type</p>
+            </div>
+            <form className="w-full">
+              <input
+                type="search"
+                name="query"
+                className="border border-gray-400 w-full rounded-md p-2"
+                placeholder="Keywords"
+              />
+            </form>
+          </div>
+          <div className="flex w-full space-x-4 justify-between items-center">
+            <div>Sort toggle</div>
+            {/* Oldest to newest/Newest to oldest */}
+            <div>
+              <button className="bg-primaryOrange text-white rounded-full px-4 py-2 hover:bg-opacity-90">
+                <div>Update Filters</div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div className="flex flex-row justify-between items-center mb-4">
+        <AddDialog sections={sections} itemCodeActions={itemCodeActions} />
         <button
           className="flex items-center gap-2 py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
           onClick={() => setIsGridView((prev) => !prev)}
         >
-          {isGridView ? <List className="w-5 h-5" /> : <Grid className="w-5 h-5" />}
-          {isGridView ? 'Switch to List View' : 'Switch to Grid View'}
+          {isGridView ? (
+            <List className="w-5 h-5" />
+          ) : (
+            <Grid className="w-5 h-5" />
+          )}
+          {isGridView ? "Switch to List View" : "Switch to Grid View"}
         </button>
       </div>
-      <AddDialog sections={sections} itemCodeActions={itemCodeActions} />
 
       {isGridView ? (
         <div className="grid md:grid-cols-3 gap-4">
           {goodsData.map((item, index) => (
-            <div key={index} className="border rounded-md p-4 shadow">
+            <div key={index} className="border bg-white rounded-md p-4 shadow">
               <img
                 src={item.pieceimage || image}
                 alt={item.name}
@@ -88,12 +162,17 @@ const Goods = () => {
 
               <h2 className="font-semibold text-md">{item.productcode}</h2>
               <p className="text-gray-500">Marked Price: ${item.markedprice}</p>
-              <p className="text-gray-500">Wholesaler Code: {getWholesalerCode(item.wholesalername)}</p>
+              <p className="text-gray-500">
+                Wholesaler Code: {getWholesalerCode(item.wholesalername)}
+              </p>
             </div>
           ))}
         </div>
       ) : (
-        <Table.Root variant="surface" className="w-full border border-gray-300 rounded-md shadow-md">
+        <Table.Root
+          variant="surface"
+          className="w-full border border-gray-300 rounded-md shadow-md"
+        >
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
@@ -116,15 +195,21 @@ const Goods = () => {
                 <Table.Cell>{item.purchasedate}</Table.Cell>
                 <Table.Cell>{item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
-                <Table.Cell>{item.pieceavailable ? 'Yes' : 'No'}</Table.Cell>
+                <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell>
                 <Table.Cell>
                   <img
                     src={item.pieceimage || image}
                     alt="Piece"
-                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "cover",
+                    }}
                   />
                 </Table.Cell>
-                <Table.Cell>{getWholesalerCode(item.wholesalername)}</Table.Cell>
+                <Table.Cell>
+                  {getWholesalerCode(item.wholesalername)}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
