@@ -6,16 +6,22 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Layout from "./pages/theme/Layout";
 import HomepageLayout from "./pages/theme/HomepageLayout";
 import ProductDetails from "./pages/ProductDetails";
+import Product from "./pages/Product";
+
 import Goods from "./pages/Goods";
 import Homepage from "./pages/Homepage";
 import Wholesalers from "./pages/Wholesalers";
 import Sales from "./pages/Sales";
 import Dashboard from "./pages/Dashboard";
 import Help from "./pages/Help";
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <div>
       <BrowserRouter>
+      <Toaster   position="top-center"
+reverseOrder={false} />
 
       <Routes>
           {/* Public Route */}
@@ -35,10 +41,12 @@ function App() {
             <Route path="/wholesalers" element={<Wholesalers/>} />
             <Route path="/sales" element={<Sales/>} />
             <Route path="/help" element={<Help/>} />
+            <Route path="/orod" element={<Product/>} />
 
 
 
-            <Route path="/product-details" element={<ProductDetails />} />
+
+            <Route path="/product-details/:id" element={<ProductDetails />} />
           </Route>
           
           {/* Redirect any unknown routes */}

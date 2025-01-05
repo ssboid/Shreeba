@@ -1,68 +1,93 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { getImages, postImage } from "../services/testApi";
 import { uploadImageToCloudinary } from "../config/uploadImageToCloudinary";
-const Help = () => {
-  const [images, setImages] = useState([]);
+
+const Help = ({ onImageUpload }) => {
+  const [latestImage, setLatestImage] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    // Fetch existing images on mount
-    const fetchImages = async () => {
+    // Fetch the latest image on mount
+    const fetchLatestImage = async () => {
       const fetchedImages = await getImages();
-      setImages(fetchedImages);
+      if (fetchedImages.length > 0) {
+        const lastImage = fetchedImages[fetchedImages.length - 1];
+        setLatestImage(lastImage);
+        // Pass the image URL to parent component
+        onImageUpload(lastImage.url);
+      }
     };
-    fetchImages();
-  }, []);
+    fetchLatestImage();
+  }, [onImageUpload]);
 
   const onDrop = async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
       setUploading(true);
-      const uploadedUrl = await uploadImageToCloudinary(file);
-      setUploading(false);
-
-      if (uploadedUrl) {
-        const newImage = await postImage(uploadedUrl);
-        if (newImage) {
-          setImages((prev) => [...prev, newImage]);
+      try {
+        const uploadedUrl = await uploadImageToCloudinary(file);
+        if (uploadedUrl) {
+          const newImage = await postImage(uploadedUrl);
+          if (newImage) {
+            setLatestImage(newImage);
+            // Pass the new image URL to parent component
+            onImageUpload(newImage.url);
+          }
+        } else {
+          alert("Failed to upload image. Please try again.");
         }
-      } else {
-        alert("Failed to upload image. Please try again.");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("Error uploading image. Please try again.");
+      } finally {
+        setUploading(false);
       }
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ 
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+    },
+    maxSize: 5242880, // 5MB
+  });
 
   return (
-    <div>
-      <h2>Image Uploader</h2>
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-gray-800">Image Uploader</h2>
       <div
         {...getRootProps()}
-        style={{
-          border: "2px dashed #ccc",
-          padding: "20px",
-          textAlign: "center",
-          cursor: "pointer",
-        }}
+        className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-orange-500 transition-colors"
       >
         <input {...getInputProps()} />
-        {uploading ? <p>Uploading...</p> : <p>Drag & drop an image or click to upload</p>}
+        {uploading ? (
+          <p className="text-gray-600">Uploading...</p>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-gray-600">Drag & drop an image or click to upload</p>
+            <p className="text-sm text-gray-400">Maximum file size: 5MB</p>
+          </div>
+        )}
       </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <h3>Uploaded Images</h3>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-          {images.map((image) => (
+      <div className="mt-4">
+        <h3 className="text-md font-medium text-gray-700 mb-2">Preview Image</h3>
+        {latestImage ? (
+          <div className="relative">
             <img
-              key={image.id}
-              src={image.url}
-              alt="Uploaded"
-              style={{ width: "150px", height: "100px", objectFit: "cover" }}
+              src={latestImage.url}
+              alt="Latest Uploaded"
+              className="w-full h-48 object-cover rounded-lg shadow-sm"
             />
-          ))}
-        </div>
+            <p className="mt-2 text-sm text-gray-500 truncate">
+              {latestImage.url}
+            </p>
+          </div>
+        ) : (
+          <p className="text-gray-500">No images uploaded yet.</p>
+        )}
       </div>
     </div>
   );
