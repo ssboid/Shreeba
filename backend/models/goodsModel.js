@@ -5,9 +5,9 @@ const addGood = async (goods) => {
     const query = `
       INSERT INTO goods (
         name, description, costprice, markedprice, wholesalername,
-        numitems, productcode, colors, sizes, purchasedate
+        numitems, productcode, colors, sizes, purchasedate, productimage
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
       )
       RETURNING *;
     `;
@@ -19,10 +19,11 @@ const addGood = async (goods) => {
       goods.markedPrice,
       goods.wholesalerName,
       goods.numItems,
-      goods.productCode, // Correct handling of productCode
+      goods.productCode,
       goods.colors,
       goods.sizes,
-      goods.purchaseDate
+      goods.purchaseDate,
+      goods.productImage
     ];
   
     try {
@@ -32,9 +33,7 @@ const addGood = async (goods) => {
       console.error('Error creating good:', error.message);
       throw error;
     }
-  };
-  
-
+};
 
 // Fetch all goods
 const getGoods = async () => {
@@ -52,7 +51,7 @@ const getGoodById = async (id) => {
 };
 
 // Update a good by ID
-const updateGood = async (id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode) => {
+const updateGood = async (id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode, productImage) => {
   const query = `
     UPDATE goods
     SET 
@@ -65,11 +64,12 @@ const updateGood = async (id, name, description, costPrice, markedPrice, size, n
       wholesaler_name = $8, 
       colors = $9, 
       purchase_date = $10, 
-      product_code = $11
+      product_code = $11,
+      product_image = $12
     WHERE id = $1
     RETURNING *;
   `;
-  const values = [id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode];
+  const values = [id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode, productImage];
   const result = await pool.query(query, values);
   return result.rows[0];
 };

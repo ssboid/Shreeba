@@ -18,6 +18,7 @@ export const getGoods = () => {
     });
 };
 
+
 // Add a new good (POST)
 export const addGood = (newGood) => {
   console.log("Attempting to add a new good:", newGood); // Log data to be added
@@ -47,6 +48,22 @@ export const updateGood = (id, updatedGood) => {
       return Promise.reject(err);
     });
 };
+
+// Fetch single good by ID
+export const getGoodById = (id) => {
+  console.log(`Fetching good with ID ${id} from: ${BASE_URL}/${id}`);
+  
+  return axios.get(`${BASE_URL}/${id}`)
+    .then((res) => {
+      console.log("Good fetched successfully:", res.data);
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(`Error fetching good with ID ${id}:`, err);
+      return Promise.reject(err);
+    });
+};
+
 
 // Delete a good (DELETE)
 export const deleteGood = (id) => {

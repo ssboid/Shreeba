@@ -7,7 +7,7 @@ const CalendarSection = ({ purchaseDate, handleDateChange }) => {
     <div className="p-4 border rounded-md shadow-sm bg-gray-50">
       <h2 className="mb-4 text-lg font-semibold text-gray-800">Purchase Date</h2>
       <NepaliDatePicker
-        className="w-full p-2 border rounded-lg text-gray-800"
+        className="p-2 border rounded-lg text-gray-800"
         value={purchaseDate}
         onChange={(date) => {
           console.log("Date Selected:", date); // Log the selected date for debugging

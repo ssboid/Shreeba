@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { addWholesaler } from '../../services/wholesalersApi';
 
 
-const WholesalerDialog = ({ onAddWholesaler }) => {
+const WholesalerForm = ({ onAddWholesaler }) => {
   const [formData, setFormData] = useState({
     name: '',
     code: '',
@@ -99,5 +99,5 @@ const WholesalerDialog = ({ onAddWholesaler }) => {
   );
 };
 
-export default WholesalerDialog;
+export default WholesalerForm;
 
