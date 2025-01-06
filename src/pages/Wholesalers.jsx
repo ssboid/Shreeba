@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
-import { getWholesalers, addWholesaler } from '../services/wholesalersApi';
-import { Table, Button } from '@radix-ui/themes';
-import { showToast } from '../utils/toastUtils';
+import { useState, useEffect } from "react";
+import { getWholesalers, addWholesaler } from "../services/wholesalersApi";
+import { Table, Button } from "@radix-ui/themes";
+import { showToast } from "../utils/toastUtils";
+import {
+  AiOutlineSortAscending,
+  AiOutlineSortDescending,
+} from "react-icons/ai";
 
 const Wholesalers = () => {
   const [wholesalerData, setWholesalerData] = useState([]);
@@ -9,11 +13,11 @@ const Wholesalers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', code: '', contact: '' });
+  const [formData, setFormData] = useState({ name: "", code: "", contact: "" });
   const [activeActionId, setActiveActionId] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   // Pagination State
@@ -21,8 +25,8 @@ const Wholesalers = () => {
   const rowsPerPage = 5;
 
   // Filter state
-  const [sortField, setSortField] = useState('name'); // Default sort by name
-  const [sortOrder, setSortOrder] = useState('asc'); // Default ascending order
+  const [sortField, setSortField] = useState("name"); // Default sort by name
+  const [sortOrder, setSortOrder] = useState("asc"); // Default ascending order
 
   useEffect(() => {
     const fetchWholesalers = async () => {
@@ -32,8 +36,8 @@ const Wholesalers = () => {
         setWholesalerData(data);
         setFilteredData(data); // Initially, filteredData is the same as wholesalerData
       } catch (err) {
-        console.error('Error fetching wholesalers:', err);
-        setError('Failed to load wholesalers. Please try again.');
+        console.error("Error fetching wholesalers:", err);
+        setError("Failed to load wholesalers. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -51,7 +55,7 @@ const Wholesalers = () => {
   };
 
   const openAddWholesalerModal = () => {
-    setFormData({ name: '', code: '', contact: '' }); // Reset form
+    setFormData({ name: "", code: "", contact: "" }); // Reset form
     setEditMode(false); // Ensure it's in add mode
     setIsFormOpen(true); // Open modal
   };
@@ -62,12 +66,12 @@ const Wholesalers = () => {
       const newWholesaler = await addWholesaler(formData);
       setWholesalerData((prevData) => [...prevData, newWholesaler]);
       setFilteredData((prevData) => [...prevData, newWholesaler]); // Update filtered data
-      setFormData({ name: '', code: '', contact: '' });
+      setFormData({ name: "", code: "", contact: "" });
       setIsFormOpen(false);
-      showToast('Wholesaler added successfully!', 'success');
+      showToast("Wholesaler added successfully!", "success");
     } catch (err) {
-      console.error('Error adding wholesaler:', err);
-      showToast('Failed to add wholesaler. Please try again.', 'error');
+      console.error("Error adding wholesaler:", err);
+      showToast("Failed to add wholesaler. Please try again.", "error");
     }
   };
 
@@ -80,12 +84,14 @@ const Wholesalers = () => {
     setIsFormOpen(false);
     setEditMode(false);
     setEditId(null);
-    setFormData({ name: '', code: '', contact: '' });
-    showToast('Wholesaler updated successfully!', 'success');
+    setFormData({ name: "", code: "", contact: "" });
+    showToast("Wholesaler updated successfully!", "success");
   };
 
   const handleEdit = (id) => {
-    const selectedWholesaler = wholesalerData.find((wholesaler) => wholesaler.id === id);
+    const selectedWholesaler = wholesalerData.find(
+      (wholesaler) => wholesaler.id === id
+    );
     if (selectedWholesaler) {
       setFormData({
         name: selectedWholesaler.name,
@@ -98,7 +104,6 @@ const Wholesalers = () => {
     }
   };
 
-
   const openDeleteModal = (id) => {
     setDeleteId(id);
     setIsDeleteModalOpen(true);
@@ -110,10 +115,12 @@ const Wholesalers = () => {
   };
 
   const confirmDelete = () => {
-    const updatedData = wholesalerData.filter((wholesaler) => wholesaler.id !== deleteId);
+    const updatedData = wholesalerData.filter(
+      (wholesaler) => wholesaler.id !== deleteId
+    );
     setWholesalerData(updatedData);
     setFilteredData(updatedData);
-    showToast(`Wholesaler with ID: ${deleteId} deleted`, 'success');
+    showToast(`Wholesaler with ID: ${deleteId} deleted`, "success");
     closeDeleteModal();
   };
 
@@ -122,13 +129,13 @@ const Wholesalers = () => {
   };
 
   const handleSort = (field) => {
-    const order = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc'; // Toggle order
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc"; // Toggle order
     setSortField(field);
     setSortOrder(order);
 
     const sortedData = [...filteredData].sort((a, b) => {
-      if (a[field] < b[field]) return order === 'asc' ? -1 : 1;
-      if (a[field] > b[field]) return order === 'asc' ? 1 : -1;
+      if (a[field] < b[field]) return order === "asc" ? -1 : 1;
+      if (a[field] > b[field]) return order === "asc" ? 1 : -1;
       return 0;
     });
 
@@ -137,7 +144,7 @@ const Wholesalers = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       setFilteredData(wholesalerData); // Reset to full data when search query is empty
     } else {
       const lowerCaseQuery = query.toLowerCase();
@@ -178,44 +185,48 @@ const Wholesalers = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="mb-4">
-         {/* Confirmation Modal */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-md space-y-4 w-1/3">
-            <h2 className="text-lg font-semibold text-gray-800">Confirm Deletion</h2>
-            <p className="text-gray-600">
-              Are you sure you want to delete this wholesaler? This action cannot be undone.
-            </p>
-            <div className="flex justify-end space-x-2">
-              <button
-                className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
-                onClick={closeDeleteModal}
-              >
-                Cancel
-              </button>
-              <button
-                className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
-                onClick={confirmDelete}
-              >
-                Confirm
-              </button>
+        {/* Confirmation Modal */}
+        {isDeleteModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-md shadow-md space-y-4 w-1/3">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Confirm Deletion
+              </h2>
+              <p className="text-gray-600">
+                Are you sure you want to delete this wholesaler? This action
+                cannot be undone.
+              </p>
+              <div className="flex justify-end space-x-2">
+                <button
+                  className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
+                  onClick={closeDeleteModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
+                  onClick={confirmDelete}
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-        <h1 className="text-2xl font-bold mb-2">Wholesalers</h1>
+        )}
+        <h1 className="text-2xl mb-4 text-primary1000 font-bold">
+          Wholesalers
+        </h1>
         <div className="flex items-center justify-between">
-          <Button
-            radius="full"
-            variant="outline"
-            className="border-orange-500 hover:bg-orange-100 text-orange-600"
+          <button
             onClick={openAddWholesalerModal}
+            className="border border-primaryOrange text-primaryOrange hover:bg-primaryOrange hover:text-white font-medium rounded-full px-4 py-2 transition-colors duration-150"
           >
             Add Wholesaler
-          </Button>
-          <div>
+          </button>
+
+          <div className="flex items-center space-x-4">
             <input
               type="text"
               value={searchQuery}
@@ -232,30 +243,32 @@ const Wholesalers = () => {
               <option value="name">Name</option>
               <option value="code">Code</option>
             </select>
-            <Button
-              radius="full"
-              variant="outline"
-              className="ml-2 text-sm"
+            <button
+              className="border border-primaryOrange text-primaryOrange hover:bg-primaryOrange hover:text-white font-medium rounded-full px-4 py-2 transition-colors duration-150"
               onClick={() => handleSort(sortField)}
             >
-              {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
-            </Button>
+              {sortOrder === "asc" ? (
+                <AiOutlineSortDescending className="w-8 h-6" />
+              ) : (
+                <AiOutlineSortAscending className="w-8 h-6" />
+              )}
+            </button>
           </div>
         </div>
       </div>
 
-           {/* Add/Edit Wholesaler Form */}
-           {isFormOpen && (
+      {/* Add/Edit Wholesaler Form */}
+      {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-40 bg-opacity-50">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               if (!formData.name || !formData.code || !formData.contact) {
-                showToast('All fields are required!', 'error');
+                showToast("All fields are required!", "error");
                 return;
               }
               if (!/^\d{10}$/.test(formData.contact)) {
-                showToast('Contact must be a 10-digit number!', 'error');
+                showToast("Contact must be a 10-digit number!", "error");
                 return;
               }
               if (editMode) {
@@ -267,7 +280,7 @@ const Wholesalers = () => {
             className="bg-white p-6 rounded-md shadow-md space-y-4 w-1/3"
           >
             <h2 className="text-lg font-semibold">
-              {editMode ? 'Edit Wholesaler' : 'Add Wholesaler'}
+              {editMode ? "Edit Wholesaler" : "Add Wholesaler"}
             </h2>
             <div>
               <label className="block font-medium mb-1">Name</label>
@@ -326,16 +339,18 @@ const Wholesalers = () => {
                 type="submit"
                 className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
-                {editMode ? 'Update' : 'Submit'}
+                {editMode ? "Update" : "Submit"}
               </button>
             </div>
           </form>
         </div>
       )}
 
-
       {/* Paginated Table */}
-      <Table.Root variant="surface" className="w-full border border-gray-300 rounded-md shadow-md">
+      <Table.Root
+        variant="surface"
+        className="w-full border border-gray-300 rounded-md shadow-md"
+      >
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
@@ -373,7 +388,7 @@ const Wholesalers = () => {
                       <button
                         className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600 font-medium"
                         onClick={() => openDeleteModal(wholesaler.id)}
-                        >
+                      >
                         Delete
                       </button>
                     </div>
@@ -392,8 +407,8 @@ const Wholesalers = () => {
           disabled={currentPage === 1}
           className={`px-4 py-2 rounded-md ${
             currentPage === 1
-              ? 'bg-gray-200 text-gray-400'
-              : 'bg-orange-500 text-white hover:bg-orange-600'
+              ? "bg-gray-200 text-gray-400"
+              : "bg-orange-500 text-white hover:bg-orange-600"
           }`}
         >
           Previous
@@ -406,8 +421,8 @@ const Wholesalers = () => {
           disabled={currentPage === totalPages}
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages
-              ? 'bg-gray-200 text-gray-400'
-              : 'bg-orange-500 text-white hover:bg-orange-600'
+              ? "bg-gray-200 text-gray-400"
+              : "bg-orange-500 text-white hover:bg-orange-600"
           }`}
         >
           Next
