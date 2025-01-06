@@ -28,7 +28,7 @@ const Homepage = () => {
   const [hovered2, setHovered2] = useState(false);
   const [hovered3, setHovered3] = useState(false);
 
-  // Handle the scroll event
+  // Handle the scroll events
   const handleScroll = (e) => {
     // Prevent default scrolling behavior
     e.preventDefault();
