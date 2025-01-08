@@ -7,6 +7,7 @@ export default {
         borderDefault: "#BBC2C9",
         primaryOrange: "#DE761C",
         primary100: "#FBECDE",
+        primary700:"#BD6518",
         primary1000: "#59300B",
         secondary100: "#FAFAEE",
         neutral700: "#303030",

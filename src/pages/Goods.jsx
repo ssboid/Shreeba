@@ -347,7 +347,7 @@ const Goods = () => {
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages
               ? "bg-gray-200 text-gray-400"
-              : "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-orange-500 text-white hover:bg-orange-600"
           }`}
         >
           Next
