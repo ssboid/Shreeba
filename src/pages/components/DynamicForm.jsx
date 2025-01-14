@@ -12,7 +12,6 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [productImage, setProductImage] = useState("");
 
-
   const { generateCode } = useGenerateItemCode(); // Use the hook
   const handleImageUpload = (imageUrl) => {
     setProductImage(imageUrl);
@@ -78,13 +77,13 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 
   const bundleData = () => {
     const { color, ...rest } = formData;
-  
+
     const bundledData = {
       ...rest,
       purchaseDate,
       productImage, // Add the product image URL
     };
-  
+
     console.log("Bundled Data:", bundledData);
     return bundledData;
   };
@@ -160,10 +159,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   return (
     <Form.Root className="p-6 bg-white space-y-6">
       {/* Sticky Add Item Header */}
-      <div
-        className="flex justify-between shadow-sm items-center p-4 bg-white border-b border-gray-300 sticky top-0 z-10"
-        style={{ maxWidth: "700px", margin: "0 auto" }}
-      >
+      <div className="flex justify-between shadow-sm w-full items-center p-4 bg-white border-b border-gray-300 sticky top-0 z-10">
         <h1 className="text-xl font-semibold text-gray-800">Add Item</h1>
         <div className="flex gap-2">
           <button
@@ -185,81 +181,80 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 mt-6">
-  {/* General Information Section */}
-  <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-    <h2 className="mb-4 text-lg font-semibold text-gray-800">
-      General Information
-    </h2>
-    {sections[0].fields.map((field, index) => (
-      <Form.Field key={index} className="mb-4" name={field.name}>
-        <div className="flex items-baseline justify-between">
-          <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
-            {field.label}
-          </Form.Label>
-          {field.required && (
-            <Form.Message
-              className="text-[13px] text-red-500"
-              match="valueMissing"
-            >
-              {field.errorMessage || "This field is required"}
-            </Form.Message>
-          )}
+      <div className="flex flex-col lg:flex-row gap-6 mt-6">
+        {/* General Information Section */}
+        <div className=" p-4 w-full border rounded-md shadow-sm bg-gray-50">
+          <h2 className="mb-4 text-lg font-semibold text-gray-800">
+            General Information
+          </h2>
+          {sections[0].fields.map((field, index) => (
+            <Form.Field key={index} className="mb-4" name={field.name}>
+              <div className="flex items-baseline justify-between">
+                <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
+                  {field.label}
+                </Form.Label>
+                {field.required && (
+                  <Form.Message
+                    className="text-[13px] text-red-500"
+                    match="valueMissing"
+                  >
+                    {field.errorMessage || "This field is required"}
+                  </Form.Message>
+                )}
+              </div>
+              <Form.Control asChild>
+                {field.type === "textarea" ? (
+                  <textarea
+                    className="w-full h-20 p-2 border rounded-lg text-gray-800"
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    value={formData[field.name] || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        [field.name]: e.target.value,
+                      }))
+                    }
+                  />
+                ) : (
+                  <input
+                    className="w-full h-10 p-2 border rounded-lg text-gray-800"
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    value={formData[field.name] || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        [field.name]: e.target.value,
+                      }))
+                    }
+                  />
+                )}
+              </Form.Control>
+              {field.name === "description" && (
+                <p className="mt-1 text-sm text-left text-orange-500">
+                  Tip: Write a description to generate filtering tags for your
+                  product.
+                </p>
+              )}
+            </Form.Field>
+          ))}
         </div>
-        <Form.Control asChild>
-          {field.type === "textarea" ? (
-            <textarea
-              className="w-full h-20 p-2 border rounded-lg text-gray-800"
-              placeholder={field.placeholder}
-              required={field.required}
-              value={formData[field.name] || ""}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  [field.name]: e.target.value,
-                }))
-              }
-            />
-          ) : (
-            <input
-              className="w-full h-10 p-2 border rounded-lg text-gray-800"
-              type={field.type}
-              placeholder={field.placeholder}
-              required={field.required}
-              value={formData[field.name] || ""}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  [field.name]: e.target.value,
-                }))
-              }
-            />
-          )}
-        </Form.Control>
-        {field.name === "description" && (
-          <p className="mt-1 text-sm text-left text-orange-500">
-            Tip: Write a description to generate filtering tags for your
-            product.
-          </p>
-        )}
-      </Form.Field>
-    ))}
-  </div>
 
-  {/* Calendar and Help Section */}
-  <div className="grid grid-cols-1 gap-4">
-    <CalendarSection
-      purchaseDate={purchaseDate}
-      handleDateChange={handleDateChange}
-    />
+        {/* Calendar and Image Section */}
+        <div className="grid w-full grid-cols-1 gap-4">
+          <CalendarSection
+            purchaseDate={purchaseDate}
+            handleDateChange={handleDateChange}
+          />
 
-    {/* Help Section */}
-    <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-    <Help onImageUpload={handleImageUpload} /> 
-       </div>
-  </div>
-</div>
-
+          {/* Help Section */}
+          <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+            <Help onImageUpload={handleImageUpload} />
+          </div>
+        </div>
+      </div>
 
       {/* Wholesaler & Pricing Section */}
       <div className="p-4 border rounded-md shadow-sm bg-gray-50">
