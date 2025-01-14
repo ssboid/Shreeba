@@ -1,8 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getGoodById } from '../services/goodsApi';
+import nlp from 'compromise'; // Import the NLP library
 
 const ProductDetails = () => {
+  const [tags, setTags] = useState([]); // State for dynamically generated tags
+
   // Color mapping object
   const colorMappings = {
     'Crimson': 'bg-red-600',
@@ -49,6 +52,15 @@ const ProductDetails = () => {
     ],
   };
 
+   // Generate tags from description using NLP
+   const generateTags = (description) => {
+    if (!description) return [];
+    const doc = nlp(description);
+    // Extract nouns and relevant terms as tags
+    const extractedTags = doc.nouns().out('array');
+    return extractedTags.length ? extractedTags.slice(0, 10) : ["General"];
+  };
+
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -61,7 +73,14 @@ const ProductDetails = () => {
       try {
         setLoading(true);
         const data = await getGoodById(id);
+        console.log(data);
         setProduct(data);
+
+        // Generate tags from product description
+        if (data.description) {
+          const generatedTags = generateTags(data.description);
+          setTags(generatedTags);
+        }
       } catch (err) {
         setError(err.response?.data?.error || 'Failed to fetch product');
       } finally {
@@ -73,6 +92,7 @@ const ProductDetails = () => {
       fetchProduct();
     }
   }, [id]);
+
 
   // Function to map color names to Tailwind classes
   const getColorClass = (colorName) => {
@@ -115,7 +135,7 @@ const ProductDetails = () => {
         <div className="w-full text-left">
           <h2 className="text-2xl font-bold">{product.name}</h2>
           <p className="text-sm text-gray-600">
-            ID No. {product.id} <br />
+            Description; {product.description} <br />
             Product code: {product.productcode} <br />
             Purchase date: {product.purchasedate}
           </p>
@@ -174,14 +194,14 @@ const ProductDetails = () => {
           <div className="mt-4">
             <h3 className="font-medium">Tags</h3>
             <div className="flex flex-wrap gap-2 mt-1">
-              {prod.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-gray-100 text-sm rounded"
-                >
-                  {tag}
-                </span>
-              ))}
+              {tags.map((tag, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-gray-100 text-sm rounded"
+              >
+                {tag}
+              </span>
+            ))}
             </div>
           </div>
         </div>
