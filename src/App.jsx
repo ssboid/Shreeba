@@ -46,7 +46,7 @@ const sections = [
 const ProtectedRoute = ({ children }) => {
   const isLogin = Cookies.get("isLogin") === "true"; // Check login status
   if (!isLogin) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
   return children;
 };

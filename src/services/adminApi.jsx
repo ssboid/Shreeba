@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.65:5000/users';
+const BASE_URL = 'http://localhost:5000/users';
 
 // Fetch all users (GET)
 export const getUsers = () => {
