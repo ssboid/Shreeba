@@ -15,7 +15,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="sticky w-64 rounded-2xl bg-white shadow-2xl flex flex-col p-4 space-y-4">
+    <div className="sticky w-64 rounded-2xl sticky top-24 bg-white shadow-2xl flex flex-col p-4 space-y-4">
       <ul className="space-y-2">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path;

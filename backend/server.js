@@ -5,12 +5,13 @@ const userRoutes = require('./routes/userRoutes');
 const wholesalerRoutes = require('./routes/wholesalerRoutes');
 const goodsRoutes = require('./routes/goodsRoutes'); // Import the goods routes
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 
 app.use(cors({
-  origin: "http://localhost:5173", // Frontend URL
+  origin: "*", // Frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
@@ -37,6 +38,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });

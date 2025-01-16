@@ -5,7 +5,7 @@ import CalendarSection from "./CalendarSection";
 import { getWholesalers } from "../../services/wholesalersApi";
 import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 import { addGood } from "../../services/goodsApi";
-import Help from "../Help";
+import Uploader from "../Uploader";
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
   const [wholesalers, setWholesalers] = useState([]);
@@ -251,7 +251,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 
           {/* Help Section */}
           <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-            <Help onImageUpload={handleImageUpload} />
+            <Uploader onImageUpload={handleImageUpload} />
           </div>
         </div>
       </div>
