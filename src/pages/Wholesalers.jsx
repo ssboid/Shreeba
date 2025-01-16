@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getWholesalers, addWholesaler } from "../services/wholesalersApi";
+import { getWholesalers, addWholesaler, deleteWholesaler, updateWholesaler } from "../services/wholesalersApi";
 import { Table, Button } from "@radix-ui/themes";
 import { showToast } from "../utils/toastUtils";
 import {
@@ -75,18 +75,26 @@ const Wholesalers = () => {
     }
   };
 
-  const handleUpdateWholesaler = (id) => {
-    const updatedData = wholesalerData.map((wholesaler) =>
-      wholesaler.id === id ? { ...wholesaler, ...formData } : wholesaler
-    );
-    setWholesalerData(updatedData);
-    setFilteredData(updatedData); // Update filtered data
-    setIsFormOpen(false);
-    setEditMode(false);
-    setEditId(null);
-    setFormData({ name: "", code: "", contact: "" });
-    showToast("Wholesaler updated successfully!", "success");
+  const handleUpdateWholesaler = async (id) => {
+    try {
+      const updatedWholesaler = await updateWholesaler(id, formData); // Call the API to update the wholesaler
+      const updatedData = wholesalerData.map((wholesaler) =>
+        wholesaler.id === id ? updatedWholesaler : wholesaler // Update the local state with the updated data
+      );
+  
+      setWholesalerData(updatedData);
+      setFilteredData(updatedData); // Update the filtered data
+      setIsFormOpen(false);
+      setEditMode(false);
+      setEditId(null);
+      setFormData({ name: "", code: "", contact: "" });
+      showToast("Wholesaler updated successfully!", "success");
+    } catch (err) {
+      console.error("Error updating wholesaler:", err);
+      showToast("Failed to update wholesaler. Please try again.", "error");
+    }
   };
+  
 
   const handleEdit = (id) => {
     const selectedWholesaler = wholesalerData.find(
@@ -115,18 +123,28 @@ const Wholesalers = () => {
   };
 
   const confirmDelete = () => {
-    const updatedData = wholesalerData.filter(
-      (wholesaler) => wholesaler.id !== deleteId
-    );
-    setWholesalerData(updatedData);
-    setFilteredData(updatedData);
-    showToast(`Wholesaler with ID: ${deleteId} deleted`, "success");
-    closeDeleteModal();
+    deleteWholesaler(deleteId) // Call the API function to delete the wholesaler
+      .then(() => {
+        // Filter the data after successful deletion
+        const updatedData = wholesalerData.filter(
+          (wholesaler) => wholesaler.id !== deleteId
+        );
+        setWholesalerData(updatedData);
+        setFilteredData(updatedData);
+        showToast(`Wholesaler with ID: ${deleteId} deleted`, "success");
+        closeDeleteModal();
+      })
+      .catch((err) => {
+        // Handle errors and show a failure toast
+        showToast(`Failed to delete wholesaler with ID: ${deleteId}`, "error");
+        console.error("Error deleting wholesaler:", err);
+      });
   };
-
+  
   const toggleActionMenu = (id) => {
     setActiveActionId((prev) => (prev === id ? null : id));
   };
+  
 
   const handleSort = (field) => {
     const order = sortField === field && sortOrder === "asc" ? "desc" : "asc"; // Toggle order

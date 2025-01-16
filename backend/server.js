@@ -5,6 +5,8 @@ const userRoutes = require('./routes/userRoutes');
 const wholesalerRoutes = require('./routes/wholesalerRoutes');
 const goodsRoutes = require('./routes/goodsRoutes'); // Import the goods routes
 
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');

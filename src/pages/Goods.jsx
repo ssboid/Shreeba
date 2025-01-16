@@ -3,7 +3,7 @@ import { Table } from "@radix-ui/themes";
 import { Grid, List } from "lucide-react";
 import image from "../assets/brand/Cover.png";
 import AddDialog from "./components/AddDialog";
-import { getGoods } from "../services/goodsApi";
+import { deleteGood, getGoods } from "../services/goodsApi";
 import { showToast } from "../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 const Goods = () => {
@@ -64,13 +64,20 @@ const Goods = () => {
       </div>
     );
   };
-  const handleDelete = () => {
-    const updatedData = goodsData.filter((item) => item.id !== itemToDelete);
-    setGoodsData(updatedData);
-    setFilteredData(updatedData);
-    setIsDeleteModalOpen(false);
-    showToast("Item deleted successfully!", "success");
+  const handleDelete = async () => {
+    try {
+      await deleteGood(itemToDelete); // Call the API to delete the good
+      const updatedData = goodsData.filter((item) => item.id !== itemToDelete); // Update local state
+      setGoodsData(updatedData);
+      setFilteredData(updatedData);
+      setIsDeleteModalOpen(false);
+      showToast("Item deleted successfully!", "success");
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      showToast("Failed to delete item. Please try again.", "error"); // Show error toast
+    }
   };
+  
   const handleDeleteClick = (id) => {
     setItemToDelete(id);
     setIsDeleteModalOpen(true);
@@ -180,6 +187,11 @@ const Goods = () => {
       ],
     },
   ];
+
+  const handleEditClick = (id) => {
+    navigate(`/edit-good/${id}`); // Navigate to the edit form with the selected item's ID
+  };
+
 
   return (
     <div className="2">
@@ -307,9 +319,13 @@ const Goods = () => {
                     </button>
                     {activeActionId === item.id && (
                       <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
-                        <button className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600">
-                          Edit
-                        </button>
+                      <button
+  className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
+  onClick={() => handleEditClick(item.id)}
+>
+  Edit
+</button>
+
                         <button
                           className="w-full px-4 py-2 text-left hover:bg-red-100 text-red-600"
                           onClick={() => handleDeleteClick(item.id)}
