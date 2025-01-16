@@ -23,7 +23,7 @@ const Login = () => {
   
       // Set cookies after successful login
       // Cookies.set('name', 'value')
-      const expiryTimeInDays = 10 / (24 * 60 * 60); // 10 seconds as a fraction of a day
+      const expiryTimeInDays = 60 / (24 * 60 * 60); // 10 seconds as a fraction of a day
       Cookies.set('isLogin', true, { expires: expiryTimeInDays });
       Cookies.set('role', response.role, { expires: expiryTimeInDays });
       console.log("Cookies set: isLogin and role");
