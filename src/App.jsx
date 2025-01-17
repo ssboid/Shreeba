@@ -11,11 +11,17 @@ import Product from "./pages/Product";
 import Goods from "./pages/Goods";
 import Homepage from "./pages/Homepage";
 import Wholesalers from "./pages/Wholesalers";
+import Accounts from "./pages/Accounts";
+
 import Sales from "./pages/Sales";
 import Dashboard from "./pages/Dashboard";
 import Help from "./pages/Help";
 import { Toaster } from "react-hot-toast";
 import EditGoodForm from "./pages/components/EditGoodForm";
+import UserDashboard from "./pages/user/UserDashboard";
+import UserGoods from "./pages/user/UserGoods";
+import UserProducts from "./pages/user/UserProducts";
+import UserSales from "./pages/user/UserSales";
 
 // Define the sections array
 const sections = [
@@ -77,7 +83,7 @@ function App() {
             <Route path="/" element={<Homepage />} />
           </Route>
 
-          {/* Protected/Admin Routes within Layout */}
+          {/* Protected Routes within Layout */}
           <Route
             element={
               <ProtectedRoute>
@@ -86,23 +92,22 @@ function App() {
             }
           >
             {/* Admin-specific routes */}
-            <Route
-              path="/dashboard"
-              element={
-                <AdminRoute>
-                  <Dashboard />
-                </AdminRoute>
-              }
-            />
-
-            {/* Routes accessible to all logged-in users */}
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/goods" element={<Goods />} />
             <Route path="/wholesalers" element={<Wholesalers />} />
+            <Route path="/accounts" element={<Accounts />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/help" element={<Help />} />
-            <Route path="/prod" element={<Product />} />
             <Route path="/edit-good/:id" element={<EditGoodForm sections={sections} />} />
             <Route path="/product-details/:id" element={<ProductDetails />} />
+
+            {/* User-specific routes */}
+            <Route path="/user" element={<UserDashboard />} />
+            <Route path="/user-goods" element={<UserGoods/>} />
+            <Route path="/user-sales" element={<UserSales/>} />
+            <Route path="/user-help" element={<div>Help</div>} />
+            <Route path="/goods-details/:id" element={<UserProducts />} />
+
           </Route>
 
           {/* Redirect any unknown routes */}

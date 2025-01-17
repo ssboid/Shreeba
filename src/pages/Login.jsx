@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUsers } from "../services/adminApi";
 import { loginUser } from "../services/adminApi";
 import Cookies from "js-cookie";
+import { showToast } from "../utils/toastUtils";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,23 +23,32 @@ const Login = () => {
       console.log("Login successful, role:", response.role);
   
       // Set cookies after successful login
-      // Cookies.set('name', 'value')
-      const expiryTimeInDays = 60 / (24 * 60 * 60); // 10 seconds as a fraction of a day
+      const expiryTimeInDays = 3600 / (24 * 60 * 60); // 10 seconds as a fraction of a day
       Cookies.set('isLogin', true, { expires: expiryTimeInDays });
       Cookies.set('role', response.role, { expires: expiryTimeInDays });
+      Cookies.set('id', response.id, { expires: expiryTimeInDays });
+
       console.log("Cookies set: isLogin and role");
+  
+      // Show success toast
+      showToast("Login successful!", "success");
   
       // Navigate based on user role
       if (response.role === "admin") {
         navigate("/dashboard");
       } else if (response.role === "user") {
-        navigate("/goods");
+        navigate("/user");
       }
     } catch (err) {
       console.error("Login failed:", err);
+  
+      // Show failure toast
+      showToast("Username and Password Error", "error");
+  
       setError(err.error || "Invalid username or password");
     }
   };
+  
 
   return (
     <div>
