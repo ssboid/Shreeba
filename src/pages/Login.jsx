@@ -20,7 +20,9 @@ const Login = () => {
       const users = await getUsers();
       console.log("Fetched users data:", users); // Log users data
 
-     const user = users.find((u) => u.userName === username && u.userPassword === password);
+      const user = users.find(
+        (u) => u.userName === username && u.userPassword === password
+      );
 
       console.log("User found:", user); // Log if a user is found or not
 
@@ -50,27 +52,32 @@ const Login = () => {
               className="absolute inset-0 w-full object-top object-cover"
             />
           </aside>
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-6 lg:px-16 lg:py-12 xl:col-span-6">
+          <main className="flex items-center justify-center px-8 py-6 sm:px-12 lg:col-span-6 lg:px-16 lg:py-12 xl:col-span-6">
             {" "}
             {/* Adjust column span to 6 for 5 columns grid with margin */}
-            <div className="max-w-xl lg:max-w-3xl w-96 max-w-full mx-auto">
+            <div className="max-w-xl lg:max-w-3xl w-full max-w-full flex flex-col space-y-8 mx-auto">
               <a className="block text-blue-600" href="#">
                 <span className="sr-only">Home</span>
                 {/* SVG Icon */}
               </a>
+              <div>
+                <h1 className="mt-6 text-3xl text-neutral700 font-heading font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                  Your Business,
+                </h1>
+                <h1 className="mt-2 text-3xl text-neutral700 font-heading font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                  Your Control
+                </h1>
+              </div>
 
-              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Login
-              </h1>
-
-              <p className="mt-4 leading-relaxed text-gray-500">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+              <p className="font-body leading-relaxed text-gray-500 lg:pr-24">
+                Log in to dive into your store management tools and analytics,
+                efficiently oversee your operations and make informed decisions
+                to drive your business forward.
               </p>
 
               <form
                 onSubmit={handleLogin}
-                className="mt-8 gap-6 flex flex-col justify-start w-96 max-w-full mx-auto" // Set width and center it
+                className="gap-6 flex flex-col justify-start w-96 w-full lg:pr-24 max-w-full mx-auto" // Set width and center it
               >
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -111,7 +118,7 @@ const Login = () => {
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                   <button
                     type="submit"
-                    className="inline-block shrink-0 rounded-md border border-primaryOrange bg-primaryOrange px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primaryOrange focus:outline-none focus:ring active:text-blue-500"
+                    className="inline-block shrink-0 rounded-md mt-8 border border-primaryOrange bg-primaryOrange px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primaryOrange focus:outline-none focus:ring active:text-blue-500"
                   >
                     Log In
                   </button>

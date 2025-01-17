@@ -12,14 +12,14 @@ const Dashboard = () => {
     series: [
       {
         data: [
-          { x: "Sari", y: 120 },
-          { x: "Kurta", y: 90 },
-          { x: "Shoes", y: 50 },
-          { x: "Accessories", y: 70 },
-          { x: "Shirts", y: 40 },
-          { x: "Pants", y: 30 },
-          { x: "Hats", y: 20 },
-          { x: "Sweaters", y: 60 },
+          { x: "Tops", y: 96 },
+          { x: "Kurta", y: 190 },
+          { x: "Piece", y: 56 },
+          { x: "Leggings", y: 70 },
+          { x: "Shawl", y: 40 },
+          { x: "Sweater", y: 30 },
+          { x: "Gown", y: 17 },
+          { x: "Dress", y: 60 },
         ],
       },
     ],
