@@ -22,6 +22,7 @@ import UserDashboard from "./pages/user/UserDashboard";
 import UserGoods from "./pages/user/UserGoods";
 import UserProducts from "./pages/user/UserProducts";
 import UserSales from "./pages/user/UserSales";
+import UserHelp from "./pages/user/UserHelp";
 
 // Define the sections array
 const sections = [
@@ -105,7 +106,7 @@ function App() {
             <Route path="/user" element={<UserDashboard />} />
             <Route path="/user-goods" element={<UserGoods/>} />
             <Route path="/user-sales" element={<UserSales/>} />
-            <Route path="/user-help" element={<div>Help</div>} />
+            <Route path="/user-help" element={<UserHelp/>} />
             <Route path="/goods-details/:id" element={<UserProducts />} />
 
           </Route>
