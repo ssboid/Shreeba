@@ -246,7 +246,7 @@ const treeMapOptions = {
 
        <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mt-4">
               {/* Area Chart */}
-              <div className="card p-4 shadow rounded-md">
+              <div className="card p-4 bg-white shadow rounded-md">
           <h2 className="text-lg font-semibold mb-4">Revenue and Profit</h2>
           <RevenueProfitChart /> {/* Include the RevenueProfitChart */}
         </div>

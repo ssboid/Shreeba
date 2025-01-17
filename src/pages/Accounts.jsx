@@ -227,13 +227,13 @@ const Accounts = () => {
               </p>
               <div className="flex justify-end space-x-2">
                 <button
-                  className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
+                  className="py-2 px-4 bg-gray-300 rounded-full hover:bg-gray-400"
                   onClick={closeDeleteModal}
                 >
                   Cancel
                 </button>
                 <button
-                  className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
+                  className="py-2 px-4 bg-red-500 text-white rounded-full hover:bg-red-600"
                   onClick={confirmDelete}
                 >
                   Confirm
@@ -333,7 +333,7 @@ const Accounts = () => {
       <div className="flex justify-end space-x-2">
         <button
           type="button"
-          className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
+          className="py-2 px-4 bg-gray-300 rounded-full hover:bg-gray-400"
           onClick={() => {
             setIsFormOpen(false);
             setEditMode(false);
@@ -344,7 +344,7 @@ const Accounts = () => {
         </button>
         <button
           type="submit"
-          className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
+          className="py-2 px-4 text-white rounded-full bg-orange-500 hover:bg-orange-600"
         >
           {editMode ? "Update" : "Submit"}
         </button>
@@ -388,7 +388,7 @@ const Accounts = () => {
             <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50 flex flex-col">
               {/* Edit button */}
               <button
-                className="w-full text-left px-4 py-2 hover:bg-blue-100 text-blue-600 font-medium border-b border-gray-200"
+                className="w-full text-left px-4 py-2 hover:bg-blue-100 rounded-full text-blue-600 font-medium border-b border-gray-200"
                 onClick={() => handleEdit(user.id)}
               >
                 Edit
@@ -397,7 +397,7 @@ const Accounts = () => {
               {/* Conditionally render Delete button */}
               {user.role !== "admin" && (
                 <button
-                  className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600 font-medium"
+                  className="w-full text-left px-4 py-2 rounded-full hover:bg-red-100 text-red-600 font-medium"
                   onClick={() => openDeleteModal(user.id)}
                 >
                   Delete
@@ -421,7 +421,7 @@ const Accounts = () => {
           className={`px-4 py-2 rounded-md ${
             currentPage === 1
               ? "bg-gray-200 text-gray-400"
-              : "bg-orange-500 text-white hover:bg-orange-600"
+              : "bg-orange-500 text-white rounded-full hover:bg-orange-600"
           }`}
         >
           Previous
@@ -435,7 +435,7 @@ const Accounts = () => {
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages
               ? "bg-gray-200 text-gray-400"
-              : "bg-orange-500 text-white hover:bg-orange-600"
+              : "bg-orange-500 text-white rounded-full hover:bg-orange-600"
           }`}
         >
           Next

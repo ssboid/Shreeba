@@ -34,23 +34,6 @@ const ProductDetails = () => {
     'XXXL': 'Triple XL (XXXL)'
   };
 
-  const prod = {
-    tags: [
-      "Plazzo",
-      "Kurta",
-      "Two piece",
-      "Blue",
-      "FA",
-      "2081",
-      "4 units",
-      "No shawl",
-      "Minimal",
-      "Above ankle",
-      "Elbow length",
-      "U neck",
-      "No pattern",
-    ],
-  };
 
    // Generate tags from description using NLP
    const generateTags = (description) => {
@@ -117,7 +100,7 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="bg-secondary100 rounded-lg shadow-2xl p-6">
+    <div className="bg-white rounded-lg shadow-2xl p-6">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Product Image */}
         <div className="w-full lg:w-[300px]">
@@ -208,10 +191,10 @@ const ProductDetails = () => {
       </div>
 
       <div className="mt-6 flex gap-4 justify-end">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
           Edit
         </button>
-        <button className="bg-red-500 text-white px-4 py-2 rounded">
+        <button className="bg-red-500 text-white px-4 py-2 rounded-full">
           Delete
         </button>
       </div>

@@ -117,19 +117,19 @@ const Product = () => {
       </div>
 
       <div className="mt-6 flex gap-4 justify-end">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
           Edit
         </button>
-        <button className="bg-red-500 text-white px-4 py-2 rounded">
+        <button className="bg-red-500 text-white px-4 py-2 rounded-full">
           Delete
         </button>
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between mt-6">
+      {/* <div className="flex justify-between mt-6">
         <button className="bg-gray-300 px-4 py-2 rounded">Previous</button>
         <button className="bg-gray-300 px-4 py-2 rounded">Next</button>
-      </div>
+      </div> */}
     </div>
   );
 };

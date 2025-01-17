@@ -31,7 +31,7 @@ const WholesalerForm = ({ onAddWholesaler }) => {
   return (
     <>
       <button
-        className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        className="py-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600"
         onClick={() => setIsDialogOpen(true)}
       >
         Add Wholesaler
@@ -80,14 +80,14 @@ const WholesalerForm = ({ onAddWholesaler }) => {
             <div className="flex justify-end space-x-2">
               <button
                 type="button"
-                className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
+                className="py-2 px-4 bg-gray-300 rounded-full hover:bg-gray-400"
                 onClick={() => setIsDialogOpen(false)}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="py-2 px-4 text-white rounded-full bg-orange-500 hover:bg-orange-600"
               >
                 Submit
               </button>

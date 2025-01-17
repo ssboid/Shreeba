@@ -7,12 +7,12 @@ const Layout = () => {
   return (
     <div className="bg-secondary100 flex flex-col min-h-screen relative">
       <Header />
-      <div className="flex flex-grow my-8 px-[8.33%]"> {/* Add top margin and horizontal padding */}
+      <div className="flex flex-grow my-8 px-[8.33%] mb-16"> {/* Add top margin and horizontal padding */}
         {/* Sidebar and Outlet in a single flex container */}
         <div className="hidden lg:block lg:w-1/4 relative z-20 flex-shrink-0">
           <Sidebar />
         </div>
-        <div className="flex-grow ml-4 w-full lg:w-3/4 mb-8"> {/* Add left margin to create gap between Sidebar and Outlet */}
+        <div className="flex-grow ml-4 w-full lg:w-3/4 "> {/* Add left margin to create gap between Sidebar and Outlet */}
           <Outlet />
         </div>
       </div>

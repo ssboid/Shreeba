@@ -1,28 +1,49 @@
+import { useState, useEffect } from "react";
 import React from "react";
-import { Box, Card, Flex, Text, Avatar, Grid } from "@radix-ui/themes";
+import { Box, Card, Flex, Text, Avatar, Grid, Tooltip } from "@radix-ui/themes";
 import Chart from "react-apexcharts";
 
 const UserDashboard = () => {
-  // Placeholder data for cards
-  const totalProducts = 150;
-  const totalWholesalers = 25;
+  const [treeMapSeries, setTreeMapSeries] = useState([]); // State for treemap data
+  const [loading, setLoading] = useState(true); // State for loading indicator
+  const [error, setError] = useState(null); // State for errors
+
+  useEffect(() => {
+    const fetchGoodsData = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch goods data
+        const goodsData = await getGoods();
+        console.log("Fetched goods data:", goodsData);
+
+        // Map data to TreeMap format
+        const formattedData = goodsData.map((item) => ({
+          x: item.name, // Name of the product
+          y: parseInt(item.numitems, 10), // Frequency of the product
+        }));
+
+        setTreeMapSeries([{ data: formattedData }]); // Set series for the chart
+      } catch (err) {
+        console.error("Error fetching goods data:", err);
+        setError("Failed to load product data for TreeMap.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGoodsData();
+  }, []);
+  if (loading) {
+    return <div>Loading...</div>; // Loading state
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>; // Error state
+  }
 
   // TreeMap chart options and data
   const treeMapOptions = {
-    series: [
-      {
-        data: [
-          { x: "Sari", y: 120 },
-          { x: "Kurta", y: 90 },
-          { x: "Shoes", y: 50 },
-          { x: "Accessories", y: 70 },
-          { x: "Shirts", y: 40 },
-          { x: "Pants", y: 30 },
-          { x: "Hats", y: 20 },
-          { x: "Sweaters", y: 60 },
-        ],
-      },
-    ],
     chart: {
       type: "treemap",
       height: 350,
@@ -47,53 +68,6 @@ const UserDashboard = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
-      {/* Dashboard Cards */}
-      <Grid columns={{ xs: "1", sm: "2" }} gap="4" className="mb-6">
-        {/* Total Products Card */}
-        <Box>
-          <Card>
-            <Flex gap="4" align="center">
-              <Avatar
-                size="3"
-                src="https://images.unsplash.com/photo-1581091870635-8b8c9f8a7d4b?&w=64&h=64&dpr=2&q=70&fit=crop"
-                radius="full"
-                fallback="P"
-              />
-              <Box>
-                <Text as="div" size="4" weight="bold">
-                  Total Products
-                </Text>
-                <Text as="div" size="3" color="gray">
-                  {totalProducts} items
-                </Text>
-              </Box>
-            </Flex>
-          </Card>
-        </Box>
-
-        {/* Total Wholesalers Card */}
-        <Box>
-          <Card>
-            <Flex gap="4" align="center">
-              <Avatar
-                size="3"
-                src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?&w=64&h=64&dpr=2&q=70&fit=crop"
-                radius="full"
-                fallback="W"
-              />
-              <Box>
-                <Text as="div" size="4" weight="bold">
-                  Total Wholesalers
-                </Text>
-                <Text as="div" size="3" color="gray">
-                  {totalWholesalers} partners
-                </Text>
-              </Box>
-            </Flex>
-          </Card>
-        </Box>
-      </Grid>
 
       {/* TreeMap Chart */}
       <Box>

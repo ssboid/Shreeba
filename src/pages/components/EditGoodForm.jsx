@@ -4,7 +4,7 @@ import { Checkbox, Grid, Text, Select } from "@radix-ui/themes";
 import CalendarSection from "./CalendarSection";
 import { getGoodById, updateGood } from "../../services/goodsApi";
 import { getWholesalers } from "../../services/wholesalersApi";
-import Help from "../Help";
+import Uploader from "../Uploader";
 import { showToast } from "../../utils/toastUtils";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -73,14 +73,14 @@ const EditGoodForm = ({ sections }) => {
         <div className="flex gap-2">
           <button
             type="button"
-            className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300"
             onClick={() => navigate(-1)} // Cancel and go back
           >
             Cancel
           </button>
           <button
             type="button"
-            className="px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-600"
+            className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
             onClick={handleSubmit} // Submit updated data
           >
             Save Changes
@@ -139,7 +139,7 @@ const EditGoodForm = ({ sections }) => {
             purchaseDate={purchaseDate}
             handleDateChange={setPurchaseDate}
           />
-          <Help onImageUpload={setProductImage} />
+          <Uploader onImageUpload={setProductImage} />
         </div>
       </div>
 
@@ -150,9 +150,10 @@ const EditGoodForm = ({ sections }) => {
         </h2>
         {sections[1].fields.map((field, index) => (
           <Form.Field key={index} className="mb-4" name={field.name}>
-            <Form.Label>{field.label}</Form.Label>
+            <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">{field.label}</Form.Label>
             <Form.Control asChild>
               <input
+              className="w-full h-10 p-2 border rounded-lg text-gray-800"
                 type={field.type}
                 placeholder={field.placeholder}
                 required={field.required}
@@ -189,10 +190,10 @@ const EditGoodForm = ({ sections }) => {
       </div>
 
       {/* Variants Section */}
-      <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+      {/* <div className="p-4 border rounded-md shadow-sm bg-gray-50">
         <h2 className="mb-4 text-lg font-semibold text-gray-800">Variants</h2>
-        {/* Additional Fields as Needed */}
-      </div>
+        Additional Fields as Needed
+      </div> */}
     </Form.Root>
   );
 };

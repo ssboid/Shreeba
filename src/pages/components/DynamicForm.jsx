@@ -117,8 +117,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         const data = await getWholesalers();
         setWholesalers(data); // Store wholesalers in state
         console.log("Fetched wholesalers:", data); // Debugging log
-    showToast("Item deleted successfully!", "success");
-
+        showToast("Item deleted successfully!", "success");
       } catch (error) {
         console.error("Error fetching wholesalers:", error);
       }
@@ -130,7 +129,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const handleSaveManualCode = () => {
     if (formData.productCode) {
       console.log("Manual Code Saved:", formData.productCode); // Log the updated code
-    showToast("Item deleted successfully!", "success");
+      showToast("Item deleted successfully!", "success");
 
       // alert(`Manual Code Saved: ${formData.productCode}`);
     } else {
@@ -150,7 +149,6 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         const response = await addGood(bundledData); // Call the API
         console.log("Good added successfully:", response); // Log success
         // alert("Good added successfully!");
-
       } catch (error) {
         console.error("Error adding good:", error); // Log error
         alert("An error occurred while adding the good.");
@@ -162,6 +160,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     submitData();
   }, [shouldSubmit]); // Trigger when `shouldSubmit` changes
 
+
+  
   return (
     <Form.Root className="p-6 bg-white space-y-6">
       {/* Sticky Add Item Header */}
@@ -170,7 +170,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         <div className="flex gap-2">
           <button
             type="button"
-            className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300"
             onClick={() => {
               // Handle cancel logic here
               console.log("Cancel clicked");
@@ -180,7 +180,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
           </button>
           <button
             onClick={() => setShouldSubmit(true)} // Trigger submission
-            className="px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-600"
+            className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
           >
             Submit
           </button>
@@ -189,7 +189,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 
       <div className="flex flex-col lg:flex-row gap-6 mt-6">
         {/* General Information Section */}
-        <div className=" p-4 w-full border rounded-md shadow-sm bg-gray-50">
+        <div className="p-4 lg:w-1/2 border rounded-md shadow-sm bg-gray-50">
           <h2 className="mb-4 text-lg font-semibold text-gray-800">
             General Information
           </h2>
@@ -249,142 +249,145 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         </div>
 
         {/* Calendar and Image Section */}
-        <div className="grid w-full grid-cols-1 gap-4">
+        <div className="grid lg:w-1/2 grid-cols-1 gap-4">
+          {/* Calendar Section */}
           <CalendarSection
             purchaseDate={purchaseDate}
             handleDateChange={handleDateChange}
           />
 
-          {/* Help Section */}
+          {/* Uploader Section */}
           <div className="p-4 border rounded-md shadow-sm bg-gray-50">
             <Uploader onImageUpload={handleImageUpload} />
           </div>
         </div>
       </div>
 
-      {/* Wholesaler & Pricing Section */}
-      <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">
-          Wholesaler & Pricing
-        </h2>
-        {sections[1].fields.map((field, index) => (
-          <Form.Field key={index} className="mb-4" name={field.name}>
+      <div className="flex lg:flex-row flex-col lg:flex-nowrap gap-6 mt-6 items-stretch">
+        {/* Wholesaler & Pricing Section */}
+        <div className="flex-1 min-w-0 p-4 border rounded-md shadow-sm bg-gray-50 max-w-[600px]">
+          <h2 className="mb-4 text-lg font-semibold text-gray-800">
+            Wholesaler & Pricing
+          </h2>
+          {sections[1].fields.map((field, index) => (
+            <Form.Field key={index} className="mb-4" name={field.name}>
+              <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
+                {field.label}
+              </Form.Label>
+              <Form.Control asChild>
+                <input
+                  className="w-full h-10 p-2 border rounded-lg text-gray-800"
+                  type={field.type}
+                  min="0" // Prevent negative values
+                  placeholder={field.placeholder}
+                  required={field.required}
+                  value={formData[field.name] || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      [field.name]: e.target.value,
+                    }))
+                  }
+                />
+              </Form.Control>
+            </Form.Field>
+          ))}
+          {/* Wholesaler Section */}
+          <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">
+              Wholesaler
+            </h2>
+            <Form.Field className="mb-4 space-x-4" name="wholesalerName">
+              <Form.Label>Wholesaler Name</Form.Label>
+              <Select.Root
+                value={formData.wholesalerName}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, wholesalerName: value }))
+                }
+              >
+                <Select.Trigger variant="surface" radius="full" />
+                <Select.Content className="width-32">
+                  {wholesalers.map((wholesaler) => (
+                    <Select.Item key={wholesaler.id} value={wholesaler.name}>
+                      {wholesaler.name}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Root>
+            </Form.Field>
+          </div>
+        </div>
+
+        {/* Variants Section */}
+        <div className="flex-1 min-w-0 p-4 border rounded-md shadow-sm bg-gray-50 max-w-[600px]">
+          <h2 className="mb-4 text-lg font-semibold text-gray-800">
+            Variants: Colors, Sizes
+          </h2>
+
+          {/* Number of Variants Field */}
+          <Form.Field className="mb-4" name="numItems">
             <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
-              {field.label}
+              Number of Variants
             </Form.Label>
             <Form.Control asChild>
               <input
                 className="w-full h-10 p-2 border rounded-lg text-gray-800"
-                type={field.type}
+                type="number"
+                placeholder="Enter number of variants"
+                value={formData.numItems || ""} // Bind to formData
                 min="0" // Prevent negative values
-                placeholder={field.placeholder}
-                required={field.required}
-                value={formData[field.name] || ""}
                 onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    [field.name]: e.target.value,
-                  }))
+                  setFormData((prev) => ({ ...prev, numItems: e.target.value }))
                 }
               />
             </Form.Control>
           </Form.Field>
-        ))}
-        {/* Wholesaler Section */}
-        <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-          <h2 className="mb-4 text-lg font-semibold text-gray-800">
-            Wholesaler
-          </h2>
-          <Form.Field className="mb-4" name="wholesalerName">
-            <Form.Label>Wholesaler Name</Form.Label>
-            <Select.Root
-              value={formData.wholesalerName}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, wholesalerName: value }))
-              }
-            >
-              <Select.Trigger variant="surface" radius="full" />
-              <Select.Content>
-                {wholesalers.map((wholesaler) => (
-                  <Select.Item key={wholesaler.id} value={wholesaler.name}>
-                    {wholesaler.name}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
-          </Form.Field>
-        </div>
-      </div>
 
-      {/* Variants Section */}
-      <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">
-          Variants: Colors, Sizes
-        </h2>
+          {/* Colors Section */}
+          <div className="mb-6">
+            <h3 className="text-md font-semibold mb-2">Colors</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+              {colors.map(({ name, colorCode }) => (
+                <div key={name} className="flex items-center gap-2">
+                  <Checkbox
+                    checked={formData.colors && formData.colors.includes(name)} // Check if the color is already selected
+                    onCheckedChange={(isChecked) =>
+                      handleColorChange(name, isChecked)
+                    } // Handle change
+                  />
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: colorCode }}
+                  ></div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        {/* Number of Variants Field */}
-        <Form.Field className="mb-4" name="numItems">
-          <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
-            Number of Variants
-          </Form.Label>
-          <Form.Control asChild>
-            <input
-              className="w-full h-10 p-2 border rounded-lg text-gray-800"
-              type="number"
-              placeholder="Enter number of variants"
-              value={formData.numItems || ""} // Bind to formData
-              min="0" // Prevent negative values
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, numItems: e.target.value }))
-              }
-            />
-          </Form.Control>
-        </Form.Field>
-
-        {/* Colors Section */}
-        <div className="mb-6">
-          <h3 className="text-md font-semibold mb-2">Colors</h3>
-          <Grid columns="5" display="inline-grid" gap="2">
-            {colors.map(({ name, colorCode }) => (
-              <div key={name} className="flex items-center gap-2">
-                <Checkbox
-                  checked={formData.colors && formData.colors.includes(name)} // Check if the color is already selected
-                  onCheckedChange={(isChecked) =>
-                    handleColorChange(name, isChecked)
-                  } // Handle change
-                />
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: colorCode }}
-                ></div>
-              </div>
-            ))}
-          </Grid>
-        </div>
-
-        {/* Sizes Section */}
-        <div>
-          <h3 className="text-md font-semibold mb-2">Sizes</h3>
-          <Grid columns="5" display="inline-grid" gap="2">
-            {sizes.map((size) => (
-              <div key={size} className="flex items-center gap-2">
-                <Checkbox
-                  checked={formData.sizes?.includes(size)} // Safely check if the size is selected
-                  onCheckedChange={(isChecked) =>
-                    handleSizeChange(size, isChecked)
-                  } // Handle change
-                />
-                <Text>{size}</Text>
-              </div>
-            ))}
-          </Grid>
+          {/* Sizes Section */}
+          <div>
+            <h3 className="text-md font-semibold mb-2">Sizes</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+              {sizes.map((size) => (
+                <div key={size} className="flex items-center gap-2">
+                  <Checkbox
+                    checked={formData.sizes?.includes(size)} // Safely check if the size is selected
+                    onCheckedChange={(isChecked) =>
+                      handleSizeChange(size, isChecked)
+                    } // Handle change
+                  />
+                  <span>{size}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Item Code Section */}
       <div className="p-4 border rounded-md shadow-sm bg-gray-50">
         <h2 className="mb-4 text-lg font-semibold text-gray-800">Item Code</h2>
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex flex-col lg:flex-row items-center gap-4 mt-4">
           <Form.Field name="productCode" className="flex-grow">
             <Form.Control asChild>
               <input
@@ -401,20 +404,22 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               />
             </Form.Control>
           </Form.Field>
-          <button
-            type="button"
-            className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
-            onClick={handleGenerateCode} // Trigger code generation
-          >
-            Generate Code
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
-            onClick={handleSaveManualCode} // Trigger manual save
-          >
-            Save Manual
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
+              onClick={handleGenerateCode} // Trigger code generation
+            >
+              Generate Code
+            </button>
+            <button
+              type="button"
+              className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
+              onClick={handleSaveManualCode} // Trigger manual save
+            >
+              Save Manual
+            </button>
+          </div>
         </div>
       </div>
     </Form.Root>
