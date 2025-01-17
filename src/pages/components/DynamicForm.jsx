@@ -117,6 +117,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         const data = await getWholesalers();
         setWholesalers(data); // Store wholesalers in state
         console.log("Fetched wholesalers:", data); // Debugging log
+    showToast("Item deleted successfully!", "success");
+
       } catch (error) {
         console.error("Error fetching wholesalers:", error);
       }
@@ -128,6 +130,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const handleSaveManualCode = () => {
     if (formData.productCode) {
       console.log("Manual Code Saved:", formData.productCode); // Log the updated code
+    showToast("Item deleted successfully!", "success");
+
       // alert(`Manual Code Saved: ${formData.productCode}`);
     } else {
       console.log("Product code is empty. Nothing to save."); // Log empty case
@@ -140,11 +144,13 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 
       const bundledData = bundleData(); // Prepare the data to send
       console.log("Submitting data:", bundledData);
+      showToast("Item deleted successfully!", "success");
 
       try {
         const response = await addGood(bundledData); // Call the API
         console.log("Good added successfully:", response); // Log success
         // alert("Good added successfully!");
+
       } catch (error) {
         console.error("Error adding good:", error); // Log error
         alert("An error occurred while adding the good.");
@@ -270,6 +276,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               <input
                 className="w-full h-10 p-2 border rounded-lg text-gray-800"
                 type={field.type}
+                min="0" // Prevent negative values
                 placeholder={field.placeholder}
                 required={field.required}
                 value={formData[field.name] || ""}
@@ -326,6 +333,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               type="number"
               placeholder="Enter number of variants"
               value={formData.numItems || ""} // Bind to formData
+              min="0" // Prevent negative values
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, numItems: e.target.value }))
               }

@@ -1,18 +1,30 @@
 import React from "react";
-import { FaTh, FaShoppingBag, FaUsers, FaChartLine, FaInfoCircle } from "react-icons/fa";
+import { FaTh, FaShoppingBag, FaUsers, FaChartLine, FaInfoCircle, FaHouseUser } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const role = Cookies.get("role");
 
-  const menuItems = [
+  const adminMenuItems = [
     { name: "Dashboard", icon: FaTh, path: "/dashboard" },
     { name: "Goods", icon: FaShoppingBag, path: "/goods" },
     { name: "Wholesalers", icon: FaUsers, path: "/wholesalers" },
+    { name: "Accounts", icon: FaHouseUser, path: "/accounts" },
     { name: "Sales", icon: FaChartLine, path: "/sales" },
     { name: "Help", icon: FaInfoCircle, path: "/help" },
   ];
+
+  const userMenuItems = [
+    { name: "Dashboard", icon: FaTh, path: "/user" },
+    { name: "Goods", icon: FaShoppingBag, path: "/user-goods" },
+    { name: "Sales", icon: FaChartLine, path: "/user-sales" },
+    { name: "Help", icon: FaInfoCircle, path: "/user-help" },
+  ];
+
+  const menuItems = role === "admin" ? adminMenuItems : userMenuItems;
 
   return (
     <div className="sticky w-64 rounded-2xl sticky top-24 bg-white shadow-2xl flex flex-col p-4 space-y-4">

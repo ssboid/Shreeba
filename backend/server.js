@@ -4,6 +4,8 @@ const pool = require('./db'); // Import the pool from db.js
 const userRoutes = require('./routes/userRoutes');
 const wholesalerRoutes = require('./routes/wholesalerRoutes');
 const goodsRoutes = require('./routes/goodsRoutes'); // Import the goods routes
+const salesRoutes = require('./routes/salesRoutes');
+
 
 
 const app = express();
@@ -11,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 
 app.use(cors({
-  origin: "*", // Frontend URL
+  origin: '*', // Allow all origins
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
@@ -22,6 +24,7 @@ app.use(express.json()); // Middleware to parse JSON requests
 app.use('/users', userRoutes);
 app.use('/wholesalers', wholesalerRoutes);
 app.use('/goods', goodsRoutes); // Mount the goods routes
+app.use('/sales', salesRoutes);
 
 // Example route to test the database connection
 app.get('/test', async (req, res) => {

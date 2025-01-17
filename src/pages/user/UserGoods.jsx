@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Table } from "@radix-ui/themes";
 import { Grid, List } from "lucide-react";
-import image from "../assets/brand/Cover.png";
-import AddDialog from "./components/AddDialog";
-import { deleteGood, getGoods } from "../services/goodsApi";
-import { showToast } from "../utils/toastUtils";
+// import image from "../assets/brand/Cover.png";
+import image from "../../assets/brand/Cover.png"
+import AddDialog from "./../components/AddDialog";
+import { deleteGood, getGoods } from "../../services/goodsApi";
+import { showToast } from "../../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
-const Goods = () => {
+const UserGoods = () => {
   const navigate = useNavigate();
   const [isGridView, setIsGridView] = useState(true);
   const [goodsData, setGoodsData] = useState([]);
@@ -19,7 +20,7 @@ const Goods = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const handleNavigateToDetails = (id) => {
-    navigate(`/product-details/${id}`);
+    navigate(`/goods-details/${id}`);
   };
   useEffect(() => {
     const fetchGoods = async () => {
@@ -196,13 +197,13 @@ const Goods = () => {
   return (
     <div className="2">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl text-primary1000 font-bold">Goods Inventory</h1>
+        <h1 className="text-2xl text-primary1000 font-bold">UserGoods Inventory</h1>
       </div>
 
       
 
       <div className="flex py-4 justify-between">
-      <AddDialog sections={sections} />
+      {/* <AddDialog sections={sections} /> */}
         <div className="flex items-center gap-4">
           <button
             className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
@@ -363,7 +364,7 @@ const Goods = () => {
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages
               ? "bg-gray-200 text-gray-400"
-              : "bg-orange-500 text-white hover:bg-orange-600"
+              : "bg-blue-500 text-white hover:bg-blue-600"
           }`}
         >
           Next
@@ -378,4 +379,4 @@ const Goods = () => {
   );
 };
 
-export default Goods;
+export default UserGoods;

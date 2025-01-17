@@ -6,8 +6,9 @@ import {
   AiOutlineSortAscending,
   AiOutlineSortDescending,
 } from "react-icons/ai";
+import { getUsers, addUser, deleteUser, editUser } from "../services/adminApi";
 
-const Wholesalers = () => {
+const Accounts = () => {
   const [wholesalerData, setWholesalerData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,21 +30,21 @@ const Wholesalers = () => {
   const [sortOrder, setSortOrder] = useState("asc"); // Default ascending order
 
   useEffect(() => {
-    const fetchWholesalers = async () => {
+    const fetchUsers = async () => {
       try {
         setLoading(true);
-        const data = await getWholesalers();
-        setWholesalerData(data);
-        setFilteredData(data); // Initially, filteredData is the same as wholesalerData
+        const data = await getUsers();
+        setWholesalerData(data); // Update this to `setUserData` if needed
+        setFilteredData(data); // Initially, filteredData is the same as user data
       } catch (err) {
-        console.error("Error fetching wholesalers:", err);
-        setError("Failed to load wholesalers. Please try again.");
+        console.error("Error fetching users:", err);
+        setError("Failed to load users. Please try again.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchWholesalers();
+  
+    fetchUsers();
   }, []);
 
   const handleInputChange = (e) => {
@@ -60,86 +61,94 @@ const Wholesalers = () => {
     setIsFormOpen(true); // Open modal
   };
 
+
   const handleAddWholesaler = async (e) => {
     e.preventDefault();
     try {
-      const newWholesaler = await addWholesaler(formData);
-      setWholesalerData((prevData) => [...prevData, newWholesaler]);
-      setFilteredData((prevData) => [...prevData, newWholesaler]); // Update filtered data
-      setFormData({ name: "", code: "", contact: "" });
+      await addUser(formData.username, formData.password);
+      const updatedUsers = await getUsers(); // Refetch all users
+      setWholesalerData(updatedUsers);
+      setFilteredData(updatedUsers);
+  
+      setFormData({ username: "", password: "" });
       setIsFormOpen(false);
-      showToast("Wholesaler added successfully!", "success");
+      showToast("User added successfully!", "success");
     } catch (err) {
-      console.error("Error adding wholesaler:", err);
-      showToast("Failed to add wholesaler. Please try again.", "error");
+      console.error("Error adding user:", err);
+      showToast("Failed to add user. Please try again.", "error");
     }
   };
+  
+  
 
   const handleUpdateWholesaler = async (id) => {
     try {
-      const updatedWholesaler = await updateWholesaler(id, formData); // Call the API to update the wholesaler
-      const updatedData = wholesalerData.map((wholesaler) =>
-        wholesaler.id === id ? updatedWholesaler : wholesaler // Update the local state with the updated data
-      );
-  
-      setWholesalerData(updatedData);
-      setFilteredData(updatedData); // Update the filtered data
+      await editUser(id, formData); // Use the API service to update user
+      const updatedUsers = await getUsers(); // Refetch updated data
+      setWholesalerData(updatedUsers);
+      setFilteredData(updatedUsers);
       setIsFormOpen(false);
       setEditMode(false);
       setEditId(null);
-      setFormData({ name: "", code: "", contact: "" });
-      showToast("Wholesaler updated successfully!", "success");
+      setFormData({ username: "", password: "", role: "" });
+      showToast("User updated successfully!", "success");
     } catch (err) {
-      console.error("Error updating wholesaler:", err);
-      showToast("Failed to update wholesaler. Please try again.", "error");
+      console.error("Error updating user:", err);
+      showToast("Failed to update user. Please try again.", "error");
     }
   };
   
+  
 
   const handleEdit = (id) => {
-    const selectedWholesaler = wholesalerData.find(
-      (wholesaler) => wholesaler.id === id
-    );
-    if (selectedWholesaler) {
+    const selectedUser = wholesalerData.find((user) => user.id === id);
+    if (selectedUser) {
       setFormData({
-        name: selectedWholesaler.name,
-        code: selectedWholesaler.code,
-        contact: selectedWholesaler.contact,
+        username: selectedUser.username,
+        password: "", // Leave password blank for editing
+        role: selectedUser.role,
       });
       setEditMode(true);
       setEditId(id);
       setIsFormOpen(true); // Open modal in edit mode
     }
   };
+  
 
   const openDeleteModal = (id) => {
+    console.log("Deleting ID:", id); // Debug the ID being passed
     setDeleteId(id);
     setIsDeleteModalOpen(true);
   };
+  
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setDeleteId(null);
   };
 
-  const confirmDelete = () => {
-    deleteWholesaler(deleteId) // Call the API function to delete the wholesaler
-      .then(() => {
-        // Filter the data after successful deletion
-        const updatedData = wholesalerData.filter(
-          (wholesaler) => wholesaler.id !== deleteId
-        );
-        setWholesalerData(updatedData);
-        setFilteredData(updatedData);
-        showToast(`Wholesaler with ID: ${deleteId} deleted`, "success");
-        closeDeleteModal();
-      })
-      .catch((err) => {
-        // Handle errors and show a failure toast
-        showToast(`Failed to delete wholesaler with ID: ${deleteId}`, "error");
-        console.error("Error deleting wholesaler:", err);
-      });
+  const confirmDelete = async () => {
+    console.log("Confirm Delete ID:", deleteId); // Debug deleteId
+    if (!deleteId) {
+      showToast("No user ID specified for deletion.", "error");
+      return;
+    }
+    try {
+      const response = await deleteUser(deleteId);
+  
+      const updatedData = wholesalerData.filter((user) => user.id !== deleteId);
+      setWholesalerData(updatedData);
+      setFilteredData(updatedData);
+  
+      showToast(`User with ID: ${deleteId} deleted`, "success");
+      closeDeleteModal();
+    } catch (err) {
+      showToast(`Failed to delete user with ID: ${deleteId}`, "error");
+      console.error("Error deleting user:", err);
+    }
   };
+  
+  
   
   const toggleActionMenu = (id) => {
     setActiveActionId((prev) => (prev === id ? null : id));
@@ -234,14 +243,14 @@ const Wholesalers = () => {
           </div>
         )}
         <h1 className="text-2xl mb-4 text-primary1000 font-bold">
-          Wholesalers
+          Accounts
         </h1>
         <div className="flex items-center justify-between">
           <button
             onClick={openAddWholesalerModal}
             className="border border-primaryOrange text-primaryOrange hover:bg-primaryOrange hover:text-white font-medium rounded-full px-4 py-2 transition-colors duration-150"
           >
-            Add Wholesaler
+            Add Account
           </button>
 
           <div className="flex items-center space-x-4">
@@ -275,148 +284,134 @@ const Wholesalers = () => {
         </div>
       </div>
 
-      {/* Add/Edit Wholesaler Form */}
-      {isFormOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-40 bg-opacity-50">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!formData.name || !formData.code || !formData.contact) {
-                showToast("All fields are required!", "error");
-                return;
-              }
-              if (!/^\d{10}$/.test(formData.contact)) {
-                showToast("Contact must be a 10-digit number!", "error");
-                return;
-              }
-              if (editMode) {
-                handleUpdateWholesaler(editId);
-              } else {
-                handleAddWholesaler(e);
-              }
-            }}
-            className="bg-white p-6 rounded-md shadow-md space-y-4 w-1/3"
-          >
-            <h2 className="text-lg font-semibold">
-              {editMode ? "Edit Wholesaler" : "Add Wholesaler"}
-            </h2>
-            <div>
-              <label className="block font-medium mb-1">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter name"
-                className="w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Code</label>
-              <input
-                type="text"
-                name="code"
-                value={formData.code}
-                onChange={handleInputChange}
-                placeholder="Enter code"
-                className="w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Contact</label>
-              <input
-                type="text"
-                name="contact"
-                value={formData.contact}
-                onChange={(e) => {
-                  if (/^\d*$/.test(e.target.value)) {
-                    setFormData({ ...formData, contact: e.target.value });
-                  }
-                }}
-                maxLength={10}
-                placeholder="Enter 10-digit contact"
-                className="w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <button
-                type="button"
-                className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
-                onClick={() => {
-                  setIsFormOpen(false);
-                  setEditMode(false);
-                  setEditId(null);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="py-2 px-4 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-              >
-                {editMode ? "Update" : "Submit"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+    {/* Add/Edit Account Form */}
+{/* Add/Edit Account Form */}
+{isFormOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-40 bg-opacity-50">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!formData.username || !formData.password) {
+          showToast("All fields are required!", "error");
+          return;
+        }
+        if (editMode) {
+          handleUpdateWholesaler(editId); // Update logic if required
+        } else {
+          handleAddWholesaler(e); // Add logic if required
+        }
+      }}
+      className="bg-white p-6 rounded-md shadow-md space-y-4 w-1/3"
+    >
+      <h2 className="text-lg font-semibold">
+        {editMode ? "Edit Account" : "Add Account"}
+      </h2>
+      <div>
+        <label className="block font-medium mb-1">Username</label>
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+          placeholder="Enter username"
+          className="w-full p-2 border rounded-md"
+          required
+        />
+      </div>
+      <div>
+        <label className="block font-medium mb-1">Password</label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          placeholder="Enter password"
+          className="w-full p-2 border rounded-md"
+          required
+        />
+      </div>
+      <div className="flex justify-end space-x-2">
+        <button
+          type="button"
+          className="py-2 px-4 bg-gray-300 rounded-md hover:bg-gray-400"
+          onClick={() => {
+            setIsFormOpen(false);
+            setEditMode(false);
+            setEditId(null);
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
+        >
+          {editMode ? "Update" : "Submit"}
+        </button>
+      </div>
+    </form>
+  </div>
+)}
 
-      {/* Paginated Table */}
-      <Table.Root
-        variant="surface"
-        className="w-full border border-gray-300 rounded-md shadow-md"
-      >
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Code</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Contact</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {currentPageData.map((wholesaler, index) => (
-            <Table.Row key={wholesaler.id}>
-              <Table.RowHeaderCell>
-                {(currentPage - 1) * rowsPerPage + index + 1}
-              </Table.RowHeaderCell>
-              <Table.Cell>{wholesaler.name}</Table.Cell>
-              <Table.Cell>{wholesaler.code}</Table.Cell>
-              <Table.Cell>{wholesaler.contact}</Table.Cell>
-              <Table.Cell>
-                <div className="relative">
-                  <button
-                    className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 shadow-md"
-                    onClick={() => toggleActionMenu(wholesaler.id)}
-                  >
-                    ...
-                  </button>
-                  {activeActionId === wholesaler.id && (
-                    <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50 flex flex-col">
-                      <button
-                        className="w-full text-left px-4 py-2 hover:bg-blue-100 text-blue-600 font-medium border-b border-gray-200"
-                        onClick={() => handleEdit(wholesaler.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600 font-medium"
-                        onClick={() => openDeleteModal(wholesaler.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+
+
+  {/* Paginated Table for Users */}
+<Table.Root
+  variant="surface"
+  className="w-full border border-gray-300 rounded-md shadow-md"
+>
+  <Table.Header>
+    <Table.Row>
+      <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
+      <Table.ColumnHeaderCell>Username</Table.ColumnHeaderCell>
+      <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
+      <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+  {currentPageData.map((user, index) => (
+    <Table.Row key={user.id}>
+      <Table.RowHeaderCell>
+        {(currentPage - 1) * rowsPerPage + index + 1}
+      </Table.RowHeaderCell>
+      <Table.Cell>{user.username}</Table.Cell>
+      <Table.Cell>{user.role}</Table.Cell>
+      <Table.Cell>
+        <div className="relative">
+          <button
+            className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 shadow-md"
+            onClick={() => toggleActionMenu(user.id)}
+          >
+            ...
+          </button>
+          {activeActionId === user.id && (
+            <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50 flex flex-col">
+              {/* Edit button */}
+              <button
+                className="w-full text-left px-4 py-2 hover:bg-blue-100 text-blue-600 font-medium border-b border-gray-200"
+                onClick={() => handleEdit(user.id)}
+              >
+                Edit
+              </button>
+
+              {/* Conditionally render Delete button */}
+              {user.role !== "admin" && (
+                <button
+                  className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600 font-medium"
+                  onClick={() => openDeleteModal(user.id)}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </Table.Cell>
+    </Table.Row>
+  ))}
+</Table.Body>
+
+</Table.Root>
 
       {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4">
@@ -450,4 +445,4 @@ const Wholesalers = () => {
   );
 };
 
-export default Wholesalers;
+export default Accounts;

@@ -1,117 +1,148 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import { useState, useEffect } from "react";
+import { fetchSales } from "../services/salesApi";
+import { Table } from "@radix-ui/themes";
 
 const Sales = () => {
-  const areaChartOptions = {
-    chart: {
-      type: 'area',
-      height: 350,
-    },
-    series: [
-      {
-        name: 'Product A',
-        data: [45, 52, 38, 45, 19, 23, 50], // Example sales data for Product A
-      },
-      {
-        name: 'Product B',
-        data: [35, 41, 62, 35, 30, 50, 45], // Example sales data for Product B
-      },
-    ],
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // X-axis categories (Months)
-    },
-    stroke: {
-      curve: 'smooth', // Smooth curves for area chart
-    },
-    legend: {
-      position: 'top',
-    },
-    dataLabels: {
-      enabled: false, // Hide data labels
-    },
-    tooltip: {
-      shared: true,
-      intersect: false,
-    },
-    colors: ['#4F46E5', '#2DD4BF'], // Custom colors
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.4,
-        opacityTo: 0.2,
-      },
-    },
+  const [salesData, setSalesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchSales();
+        console.log("Fetched sales data:", data); // Log fetched data for debugging
+        setSalesData(data);
+      } catch (err) {
+        console.error("Error fetching sales:", err);
+        setError("Failed to load sales. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSalesData();
+  }, []);
+
+  // Pagination Logic
+  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const currentPageData = salesData.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  // Calculate Total Revenue
+  const totalRevenue = salesData.reduce((sum, sale) => sum + sale.selling_price, 0);
+
+  // Calculate Total Profit
+  const totalProfit = salesData
+    .map((sale) => sale.selling_price - (sale.marked_price || 0)) // Map profits
+    .filter((profit) => !isNaN(profit)) // Exclude invalid profits
+    .reduce((sum, profit) => sum + profit, 0); // Sum valid profits
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
-  const barChartOptions = {
-    chart: {
-      type: 'bar',
-      stacked: false,
-      height: 350,
-    },
-    series: [
-      {
-        name: 'Online Sales',
-        data: [400, 500, 600, 700, 800, 850, 900], // Example sales data for Online
-      },
-      {
-        name: 'Offline Sales',
-        data: [300, 450, 500, 550, 600, 650, 700], // Example sales data for Offline
-      },
-    ],
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // X-axis categories (Months)
-    },
-    colors: ['#FF5733', '#33C3FF'], // Custom colors for bar chart
-    dataLabels: {
-      enabled: false,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '55%',
-        borderRadius: 5,
-      },
-    },
-    legend: {
-      position: 'top',
-    },
-    tooltip: {
-      shared: true,
-      intersect: false,
-    },
-    grid: {
-      borderColor: '#e0e0e0',
-      strokeDashArray: 4,
-    },
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Sales Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Area Chart */}
-        <div className="card p-4 shadow rounded-md">
-          <h2 className="text-lg font-semibold mb-4">Sales Overview</h2>
-          <Chart
-            options={areaChartOptions}
-            series={areaChartOptions.series}
-            type="area"
-            height={350}
-          />
-        </div>
+    <div>
+      <div className="mb-4">
+        <h1 className="text-2xl mb-4 text-primary1000 font-bold">Admin Sales</h1>
+      </div>
+      {/* Paginated Table */}
+      <Table.Root
+        variant="surface"
+        className="w-full border border-gray-300 rounded-md shadow-md"
+      >
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>S.N</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Product Code</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>S.P</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>M.P</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Profit</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Date</Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {currentPageData.map((sale, index) => {
+            const profit = sale.selling_price - (sale.marked_price || 0); // Calculate profit
+            return (
+              <Table.Row key={sale.sale_id}>
+                <Table.RowHeaderCell>
+                  {(currentPage - 1) * rowsPerPage + index + 1}
+                </Table.RowHeaderCell>
+                <Table.Cell>{sale.goods_name || "N/A"}</Table.Cell> {/* Name */}
+                <Table.Cell>{sale.productcode || "N/A"}</Table.Cell> {/* Product Code */}
+                <Table.Cell>{sale.selling_price}</Table.Cell> {/* Selling Price */}
+                <Table.Cell>{sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
+                <Table.Cell>{!isNaN(profit) ? profit : "N/A"}</Table.Cell> {/* Profit */}
+                <Table.Cell>{sale.sale_date.split("T")[0]}</Table.Cell> {/* Date */}
+              </Table.Row>
+            );
+          })}
+          {/* Total Revenue and Profit Row */}
+          <Table.Row>
+            <Table.RowHeaderCell colSpan={3} className="font-bold text-right">
+              Total
+            </Table.RowHeaderCell>
+            <Table.Cell className="font-bold">{totalRevenue}</Table.Cell> {/* Total Revenue */}
+            <Table.Cell></Table.Cell>
+            <Table.Cell className="font-bold">{totalProfit}</Table.Cell> {/* Total Profit */}
+            <Table.Cell></Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table.Root>
 
-        {/* Bar Chart */}
-        <div className="card p-4 shadow rounded-md">
-          <h2 className="text-lg font-semibold mb-4">Online vs Offline Sales</h2>
-          <Chart
-            options={barChartOptions}
-            series={barChartOptions.series}
-            type="bar"
-            height={350}
-          />
-        </div>
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded-md ${
+            currentPage === 1
+              ? "bg-gray-200 text-gray-400"
+              : "bg-orange-500 text-white hover:bg-orange-600"
+          }`}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded-md ${
+            currentPage === totalPages
+              ? "bg-gray-200 text-gray-400"
+              : "bg-orange-500 text-white hover:bg-orange-600"
+          }`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
