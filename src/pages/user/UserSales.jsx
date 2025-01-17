@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import NepaliDate from "nepali-date"; // Import NepaliDate library
 import { fetchSales } from "../../services/salesApi";
 import { Table } from "@radix-ui/themes";
 
@@ -12,19 +13,50 @@ const UserSales = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  // Helper function to format the date
-  const formatDate = (dateString) => {
+  // Get today's Nepali date in YYYY-MM-DD format
+  const getTodayNepaliDate = () => {
+    const nepaliToday = new NepaliDate(); // Get today's Nepali date
+    const year = nepaliToday.getYear();
+    const month = String(nepaliToday.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(nepaliToday.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+  };
+
+  // Adjust a Nepali date by adding 1 day
+  const adjustNepaliDate = (dateString) => {
     if (!dateString) return "N/A";
-    return dateString.split("T")[0]; // Split on 'T' and take the first part
+    const nepaliDate = new NepaliDate(dateString); // Convert ISO date to Nepali date
+    nepaliDate.setDate(nepaliDate.getDate() + 1); // Add 1 day
+    const year = nepaliDate.getYear();
+    const month = String(nepaliDate.getMonth() + 1).padStart(2, "0");
+    const day = String(nepaliDate.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`; // Return adjusted date as YYYY-MM-DD
   };
 
   useEffect(() => {
     const fetchSalesData = async () => {
       try {
         setLoading(true);
+
+        // Fetch sales from the API
         const data = await fetchSales();
-        setSalesData(data);
-        setFilteredData(data); // Initially, filteredData is the same as salesData
+        console.log("Fetched sales data:", data);
+
+        // Get today's Nepali date for filtering
+        const nepaliToday = getTodayNepaliDate();
+        console.log("Today's Nepali date:", nepaliToday);
+
+        // Filter sales for today's Nepali date
+        const todaysSales = data.filter((sale) => {
+          const adjustedDate = adjustNepaliDate(sale.sale_date); // Adjust the date
+          console.log("Adjusted Nepali date for sale:", adjustedDate);
+          return adjustedDate === nepaliToday; // Compare with today's Nepali date
+        });
+
+        console.log("Today's sales data:", todaysSales);
+
+        setSalesData(todaysSales);
+        setFilteredData(todaysSales); // Set filtered data as today's sales
       } catch (err) {
         console.error("Error fetching sales:", err);
         setError("Failed to load sales. Please try again.");
@@ -64,11 +96,8 @@ const UserSales = () => {
   }
 
   return (
-    <div className="">
-      <div className="mb-4">
-        <h1 className="text-2xl mb-4 text-primary1000 font-bold">Sales</h1>
-      </div>
-      {/* Paginated Table */}
+    <div>
+      <h1 className="text-2xl mb-4 text-primary1000 font-bold">Today's Sales</h1>
       <Table.Root
         variant="surface"
         className="w-full border border-gray-300 rounded-md shadow-md"
@@ -92,7 +121,7 @@ const UserSales = () => {
               <Table.Cell>{sale.goods_name || "N/A"}</Table.Cell> {/* Name */}
               <Table.Cell>{sale.selling_price}</Table.Cell> {/* Selling Price */}
               <Table.Cell>{sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
-              <Table.Cell>{formatDate(sale.sale_date)}</Table.Cell> {/* Formatted Date */}
+              <Table.Cell>{adjustNepaliDate(sale.sale_date)}</Table.Cell> {/* Adjusted Date */}
               <Table.Cell>{sale.remarks || "No Remarks"}</Table.Cell> {/* Remarks */}
             </Table.Row>
           ))}

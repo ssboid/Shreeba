@@ -52,6 +52,8 @@ const getAllSalesWithDetails = async () => {
         sales.sp AS selling_price, 
         sales.date AS sale_date, 
         sales.remarks, 
+          goods.productcode,
+
         goods.name AS goods_name, 
         goods.markedprice AS marked_price
       FROM sales
