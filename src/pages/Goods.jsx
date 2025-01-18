@@ -8,6 +8,8 @@ import { showToast } from "../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 const Goods = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+
   const [isGridView, setIsGridView] = useState(true);
   const [goodsData, setGoodsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -34,6 +36,22 @@ const Goods = () => {
 
     fetchGoods();
   }, []);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setFilteredData(goodsData); // Reset to full data if query is empty
+    } else {
+      const lowerCaseQuery = query.toLowerCase();
+      const filtered = goodsData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerCaseQuery) ||
+          item.wholesalername.toLowerCase().includes(lowerCaseQuery)
+      );
+      setFilteredData(filtered);
+    }
+  };
+
 
   const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -77,7 +95,7 @@ const Goods = () => {
       showToast("Failed to delete item. Please try again.", "error"); // Show error toast
     }
   };
-
+  
   const handleDeleteClick = (id) => {
     setItemToDelete(id);
     setIsDeleteModalOpen(true);
@@ -192,15 +210,25 @@ const Goods = () => {
     navigate(`/edit-good/${id}`); // Navigate to the edit form with the selected item's ID
   };
 
+
   return (
     <div className="2">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl text-primary1000 font-bold">Goods Inventory</h1>
       </div>
 
+      
+
       <div className="flex py-4 justify-between">
-        <AddDialog sections={sections} />
+      <AddDialog sections={sections} />
         <div className="flex items-center gap-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search by Name..."
+          className="p-2 border rounded-md w-[220px]"
+        />
           <button
             className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
             onClick={handleSortChange}
@@ -275,7 +303,7 @@ const Goods = () => {
       ) : (
         <Table.Root
           variant="surface"
-          className="w-full relative border border-gray-300 rounded-md shadow-md"
+          className="w-full border border-gray-300 rounded-md shadow-md"
         >
           <Table.Header>
             <Table.Row>
@@ -315,16 +343,13 @@ const Goods = () => {
                       ...
                     </button>
                     {activeActionId === item.id && (
-                      <div
-                        className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-[9999]"
-                        style={{ position: "absolute" }}
-                      >
-                        <button
-                          className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
-                          onClick={() => handleEditClick(item.id)}
-                        >
-                          Edit
-                        </button>
+                      <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                      <button
+  className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
+  onClick={() => handleEditClick(item.id)}
+>
+  Edit
+</button>
 
                         <button
                           className="w-full px-4 py-2 text-left hover:bg-red-100 text-red-600"
