@@ -9,6 +9,7 @@ import { showToast } from "../../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 const UserGoods = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [isGridView, setIsGridView] = useState(true);
   const [goodsData, setGoodsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -35,6 +36,21 @@ const UserGoods = () => {
 
     fetchGoods();
   }, []);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setFilteredData(goodsData); // Reset to full data if query is empty
+    } else {
+      const lowerCaseQuery = query.toLowerCase();
+      const filtered = goodsData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerCaseQuery) ||
+          item.wholesalername.toLowerCase().includes(lowerCaseQuery)
+      );
+      setFilteredData(filtered);
+    }
+  };
 
   const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -205,6 +221,13 @@ const UserGoods = () => {
       <div className="flex py-4 justify-between">
       {/* <AddDialog sections={sections} /> */}
         <div className="flex items-center gap-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search by Name..."
+          className="p-2 border rounded-md w-[220px]"
+        />
           <button
             className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
             onClick={handleSortChange}

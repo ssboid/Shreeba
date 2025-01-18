@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import BannerIso from "../assets/home/banneriso.png";
 import SalesImg from "../assets/home/sale.png";
@@ -18,6 +19,7 @@ import {
 
 const Homepage = () => {
   // Refs to each div
+  const navigate = useNavigate();
   const div1Ref = useRef(null);
   const div2Ref = useRef(null);
   const div3Ref = useRef(null);
@@ -100,6 +102,7 @@ const Homepage = () => {
             clicks. Log in now and simplify your work today!
           </p>
           <button
+          onClick={() => navigate("/login")}
             type="button"
             className="bg-primaryOrange text-white rounded-full px-6 py-4 hover:bg-opacity-90"
           >
@@ -362,6 +365,7 @@ const Homepage = () => {
               started!
             </span>
             <button
+            onClick={() => navigate("/login")}
               type="button"
               className="bg-primaryOrange text-white rounded-full px-6 py-4 hover:bg-opacity-90 self-center" // Added self-center to center the button
             >

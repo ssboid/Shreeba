@@ -65,7 +65,7 @@ const Header = () => {
     Cookies.remove("isLogin");
     Cookies.remove("role");
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   // Handle scroll direction
