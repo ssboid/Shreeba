@@ -140,26 +140,25 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   useEffect(() => {
     const submitData = async () => {
       if (!shouldSubmit) return;
-
+      console.log("Preparing to submit data...");
       const bundledData = bundleData(); // Prepare the data to send
       console.log("Submitting data:", bundledData);
-      // showToast("Item deleted successfully!", "success");
-
+  
       try {
         const response = await addGood(bundledData); // Call the API
-        console.log("Good added successfully:", response); // Log success
-        // alert("Good added successfully!");
+        console.log("Good added successfully:", response);
+        // Optionally reset the form or show a success message
       } catch (error) {
-        console.error("Error adding good:", error); // Log error
+        console.error("Error adding good:", error);
         alert("An error occurred while adding the good.");
       } finally {
         setShouldSubmit(false); // Reset submission trigger
       }
     };
-
+  
     submitData();
-  }, [shouldSubmit]); // Trigger when `shouldSubmit` changes
-
+  }, [shouldSubmit]);
+  
 
   
   return (
