@@ -117,7 +117,6 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         const data = await getWholesalers();
         setWholesalers(data); // Store wholesalers in state
         console.log("Fetched wholesalers:", data); // Debugging log
-        showToast("Item deleted successfully!", "success");
       } catch (error) {
         console.error("Error fetching wholesalers:", error);
       }
@@ -129,7 +128,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const handleSaveManualCode = () => {
     if (formData.productCode) {
       console.log("Manual Code Saved:", formData.productCode); // Log the updated code
-      showToast("Item deleted successfully!", "success");
+      const bundledData = bundleData(); // Prepare the data to send
+      console.log("Submitting data:", bundledData);
 
       // alert(`Manual Code Saved: ${formData.productCode}`);
     } else {
@@ -143,7 +143,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
 
       const bundledData = bundleData(); // Prepare the data to send
       console.log("Submitting data:", bundledData);
-      showToast("Item deleted successfully!", "success");
+      // showToast("Item deleted successfully!", "success");
 
       try {
         const response = await addGood(bundledData); // Call the API
