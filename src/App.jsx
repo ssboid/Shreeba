@@ -67,6 +67,18 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
+
+// Role-based Redirect Component
+const RoleBasedRedirect = () => {
+  const role = Cookies.get("role"); // Get the role from cookies
+  if (role === "admin") {
+    return <Navigate to="/dashboard" replace />;
+  }
+  if (role === "user") {
+    return <Navigate to="/user" replace />;
+  }
+  return <Homepage />; // Default to Homepage if no role is set
+};
 function App() {
   return (
     <div>
@@ -81,7 +93,7 @@ function App() {
 
           {/* Homepage with Header and Footer only */}
           <Route element={<HomepageLayout />}>
-            <Route path="/" element={<Homepage />} />
+            <Route path="/" element={<RoleBasedRedirect />} />
           </Route>
 
           {/* Protected Routes within Layout */}
@@ -104,11 +116,10 @@ function App() {
 
             {/* User-specific routes */}
             <Route path="/user" element={<UserDashboard />} />
-            <Route path="/user-goods" element={<UserGoods/>} />
-            <Route path="/user-sales" element={<UserSales/>} />
-            <Route path="/user-help" element={<UserHelp/>} />
+            <Route path="/user-goods" element={<UserGoods />} />
+            <Route path="/user-sales" element={<UserSales />} />
+            <Route path="/user-help" element={<UserHelp />} />
             <Route path="/goods-details/:id" element={<UserProducts />} />
-
           </Route>
 
           {/* Redirect any unknown routes */}

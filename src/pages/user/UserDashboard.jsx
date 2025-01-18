@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { Box, Card, Flex, Text, Avatar, Grid, Tooltip } from "@radix-ui/themes";
 import Chart from "react-apexcharts";
+import { getGoods } from "../../services/goodsApi";
 
 const UserDashboard = () => {
   const [treeMapSeries, setTreeMapSeries] = useState([]); // State for treemap data
@@ -75,7 +76,7 @@ const UserDashboard = () => {
           <h2 className="text-lg font-semibold mb-4">Product Frequency</h2>
           <Chart
             options={treeMapOptions}
-            series={treeMapOptions.series}
+            series={treeMapSeries}
             type="treemap"
             height={350}
           />
