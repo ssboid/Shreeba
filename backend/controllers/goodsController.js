@@ -87,32 +87,19 @@ const editGood = async (req, res) => {
       description, 
       costPrice, 
       markedPrice, 
-      sizes, 
-      numItems, 
       wholesalerName, 
-      colors, 
       purchaseDate, 
-      productCode,
       productImage 
   } = req.body;
-
-  if (!id || !name || !description || !costPrice || !markedPrice || !sizes || !numItems || !wholesalerName || !colors || !purchaseDate || !productCode) {
-      return res.status(400).json({ error: 'ID and all fields are required' });
-  }
-
   try {
       const updatedGood = await updateGood(
           id, 
           name, 
           description, 
           costPrice, 
-          markedPrice, 
-          sizes, 
-          numItems, 
+          markedPrice,   
           wholesalerName, 
-          colors, 
           purchaseDate, 
-          productCode,
           productImage
       );
       if (!updatedGood) {

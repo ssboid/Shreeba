@@ -51,25 +51,21 @@ const getGoodById = async (id) => {
 };
 
 // Update a good by ID
-const updateGood = async (id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode, productImage) => {
+const updateGood = async (id, name, description, costPrice, markedPrice, wholesalerName, purchaseDate, productImage) => {
   const query = `
     UPDATE goods
     SET 
       name = $2, 
       description = $3, 
-      cost_price = $4, 
-      marked_price = $5, 
-      sizes = $6, 
-      num_items = $7, 
-      wholesaler_name = $8, 
-      colors = $9, 
-      purchase_date = $10, 
-      product_code = $11,
-      product_image = $12
+      costprice = $4, 
+      markedprice = $5, 
+      wholesalername = $6, 
+      purchasedate = $7, 
+      productimage = $8
     WHERE id = $1
     RETURNING *;
   `;
-  const values = [id, name, description, costPrice, markedPrice, size, numItems, wholesalerName, colors, purchaseDate, productCode, productImage];
+  const values = [id, name, description, costPrice, markedPrice, wholesalerName, purchaseDate, productImage];
   const result = await pool.query(query, values);
   return result.rows[0];
 };
