@@ -220,7 +220,7 @@ const UserGoods = () => {
 
       <div className="flex py-4 justify-between">
       {/* <AddDialog sections={sections} /> */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
         <input
           type="text"
           value={searchQuery}
