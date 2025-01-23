@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // const API_BASE_URL = 'http://localhost:5000/sales';
-const API_BASE_URL = 'http://192.168.1.72:5000/sales';
+const API_BASE_URL = 'http://192.168.184.172:5000/sales';
 
 // Add a new sale
 export const addSale = async (saleData) => {

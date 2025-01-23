@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // const BASE_URL = 'http://localhost:5000/wholesalers';
-const BASE_URL = 'http://192.168.1.72:5000/wholesalers';
+const BASE_URL = 'http://192.168.184.172:5000/wholesalers';
 
 // Fetch all wholesalers (GET)
 export const getWholesalers = () => {
