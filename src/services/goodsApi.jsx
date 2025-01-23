@@ -1,8 +1,8 @@
 // services/goodsApi.js
 import axios from 'axios';
 
-// const BASE_URL = 'http://localhost:5000/goods'; // Base URL for the goods API
-const BASE_URL = 'http://192.168.1.72:5000/goods'; // Base URL for the goods API
+const BASE_URL = 'http://localhost:5000/goods'; // Base URL for the goods API
+// const BASE_URL = 'http://192.168.1.72:5000/goods'; // Base URL for the goods API
 
 // Fetch all goods (GET)
 export const getGoods = () => {
@@ -40,6 +40,20 @@ export const updateGood = (id, updatedGood) => {
   console.log(`Attempting to update good with ID ${id}:`, updatedGood); // Log ID and data to update
 
   return axios.put(`${BASE_URL}/${id}`, updatedGood)
+    .then((res) => {
+      console.log("Good updated successfully:", res.data); // Log success response
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(`Error updating good with ID ${id}:`, err); // Log error if updating fails
+      return Promise.reject(err);
+    });
+};
+
+export const updateVar = (id, updatedGood) => {
+  console.log(`Attempting to update good with ID ${id}:`, updatedGood); // Log ID and data to update
+
+  return axios.put(`${BASE_URL}/${id}/variants`, updatedGood)
     .then((res) => {
       console.log("Good updated successfully:", res.data); // Log success response
       return res.data;

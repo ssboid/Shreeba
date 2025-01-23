@@ -96,9 +96,9 @@ const Sales = () => {
                 </Table.RowHeaderCell>
                 <Table.Cell>{sale.goods_name || "N/A"}</Table.Cell> {/* Name */}
                 <Table.Cell>{sale.productcode || "N/A"}</Table.Cell> {/* Product Code */}
-                <Table.Cell>{sale.selling_price}</Table.Cell> {/* Selling Price */}
-                <Table.Cell>{sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
-                <Table.Cell>{!isNaN(profit) ? profit : "N/A"}</Table.Cell> {/* Profit */}
+                <Table.Cell>Rs. {sale.selling_price}</Table.Cell> {/* Selling Price */}
+                <Table.Cell>Rs. {sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
+                <Table.Cell>Rs. {!isNaN(profit) ? profit : "N/A"}</Table.Cell> {/* Profit */}
                 <Table.Cell>{sale.sale_date.split("T")[0]}</Table.Cell> {/* Date */}
               </Table.Row>
             );

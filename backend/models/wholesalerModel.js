@@ -7,9 +7,18 @@ const addWholesaler = async (name, code, contact) => {
     RETURNING *;
   `;
   const values = [name, code, contact];
-  const result = await pool.query(query, values);
-  return result.rows[0];
+
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    if (error.code === '23505') {  // PostgreSQL unique violation error code
+      throw new Error('Wholesaler code must be unique');
+    }
+    throw new Error('Database query failed: ' + error.message);
+  }
 };
+
 
 // Fetch all wholesalers
 const getWholesalers = async () => {

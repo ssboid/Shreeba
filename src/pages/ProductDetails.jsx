@@ -137,6 +137,9 @@ const ProductDetails = () => {
             <p>
               Marked Price: <strong>{product.markedprice}</strong>
             </p>
+            <p>
+              Variants: <strong>{product.numitems}</strong>
+            </p>
           </div>
 
           {/* Variants */}
@@ -190,14 +193,14 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className="mt-6 flex gap-4 justify-end">
+      {/* <div className="mt-6 flex gap-4 justify-end">
         <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
           Edit
         </button>
         <button className="bg-red-500 text-white px-4 py-2 rounded-full">
           Delete
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -84,7 +84,7 @@ function App() {
     <div>
       <BrowserRouter>
         <div>
-          <Toaster className="z-40" position="top-center" reverseOrder={false} />
+          <Toaster className="-z-0" position="top-center" reverseOrder={false} />
         </div>
 
         <Routes>

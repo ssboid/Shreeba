@@ -6,7 +6,7 @@ import { NepaliDatePicker } from 'nepali-datepicker-reactjs';
 import 'nepali-datepicker-reactjs/dist/index.css';
 import Cookies from 'js-cookie';
 import { addSale } from '../../services/salesApi';
-
+import { updateVar } from '../../services/goodsApi';
 const UserProducts = () => {
   const [tags, setTags] = useState([]); // State for dynamically generated tags
 
@@ -74,7 +74,6 @@ const UserProducts = () => {
   const [sellingPrice, setSellingPrice] = useState('');
   const [date, setDate] = useState('');
   const [remarks, setRemarks] = useState('');
-
   const handleSubmit = async () => {
     if (!sellingPrice || !date) {
       alert('Selling Price and Date are required!');
@@ -90,9 +89,10 @@ const UserProducts = () => {
         return;
       }
   
+      // Prepare sale data to add
       const saleData = {
         userId,          // Retrieved from cookies
-        goodsId: id,     // Passed as a prop or retrieved from the route
+        goodsId: id,     // Retrieved from the route
         sp: sellingPrice,
         date,
         remarks,
@@ -104,14 +104,38 @@ const UserProducts = () => {
       const response = await addSale(saleData);
       console.log('Sale added successfully:', response);
   
-      // Optionally, show a success message or refresh data
       alert('Sale added successfully!');
+  
+      // Update the numitems state immediately
+      if (product && product.numitems > 0) {
+        const updatedGood = {
+          numitems: product.numitems - 1,  // Deduct 1 from numitems
+        };
+  
+        console.log('Updating product inventory:', updatedGood);
+  
+        // Update in backend
+        await updateVar(id, updatedGood);
+  
+        // Update state for instant UI feedback
+        setProduct((prev) => ({
+          ...prev,
+          numitems: prev.numitems - 1,
+        }));
+  
+        console.log(`Product ${id} inventory updated successfully!`);
+      } else {
+        alert('No items left in stock.');
+      }
+  
       setShowPopup(false); // Close the popup
     } catch (error) {
       console.error('Error submitting sale:', error);
-      alert(error.error || 'Failed to add sale.');
+      alert(error.message || 'Failed to add sale.');
     }
   };
+  
+  
 
   const FALLBACK_IMAGE = "https://www.devnaagri.com/cdn/shop/files/CelebWebsite2278.jpg?v=1709111593";
 
@@ -200,6 +224,9 @@ const UserProducts = () => {
             </p>
             <p>
               Marked Price: <strong>{product.markedprice}</strong>
+            </p>
+                    <p>
+              Variants: <strong>{product.numitems}</strong>
             </p>
           </div>
 

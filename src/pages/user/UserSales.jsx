@@ -119,8 +119,8 @@ const UserSales = () => {
                 {(currentPage - 1) * rowsPerPage + index + 1}
               </Table.RowHeaderCell>
               <Table.Cell>{sale.goods_name || "N/A"}</Table.Cell> {/* Name */}
-              <Table.Cell>{sale.selling_price}</Table.Cell> {/* Selling Price */}
-              <Table.Cell>{sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
+              <Table.Cell>Rs. {sale.selling_price}</Table.Cell> {/* Selling Price */}
+              <Table.Cell>Rs. {sale.marked_price || "N/A"}</Table.Cell> {/* Marked Price */}
               <Table.Cell>{adjustNepaliDate(sale.sale_date)}</Table.Cell> {/* Adjusted Date */}
               <Table.Cell>{sale.remarks || "No Remarks"}</Table.Cell> {/* Remarks */}
             </Table.Row>

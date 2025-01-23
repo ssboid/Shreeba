@@ -4,7 +4,8 @@ const {
   fetchGoods, 
   fetchGoodById, 
   editGood, 
-  removeGood 
+  removeGood,
+  updateVariants
 } = require('../controllers/goodsController');
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.get('/:id', fetchGoodById);
 
 // Route to update a good by ID (PUT)
 router.put('/:id', editGood);
+router.put('/:id/variants', updateVariants);
+
 
 // Route to delete a good by ID (DELETE)
 router.delete('/:id', removeGood);

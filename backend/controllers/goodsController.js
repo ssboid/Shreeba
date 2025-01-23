@@ -3,7 +3,8 @@ const {
   getGoods, 
   getGoodById, 
   updateGood, 
-  deleteGood 
+  deleteGood,
+  updateNumItems
 } = require('../models/goodsModel');
 
 // Create a new good
@@ -132,10 +133,33 @@ const removeGood = async (req, res) => {
   }
 };
 
+
+
+const updateVariants = async (req, res) => {
+    const { id } = req.params;
+    const { numitems } = req.body;
+  
+    console.log('Received ID:', id);
+    console.log('Received numItems:', numitems);
+
+  
+    try {
+      const updatedGood = await updateNumItems(id, numitems);
+      if (!updatedGood) {
+        return res.status(404).json({ error: 'Good not found' });
+      }
+      res.status(200).json(updatedGood);
+    } catch (error) {
+      console.error('Error updating good:', error.message);
+      res.status(500).json({ error: 'An error occurred while updating good' });
+    }
+  };
+  
 module.exports = {
   createGood,
   fetchGoods,
   fetchGoodById,
   editGood,
-  removeGood
+  removeGood,
+  updateVariants
 };

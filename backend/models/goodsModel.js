@@ -70,6 +70,25 @@ const updateGood = async (id, name, description, costPrice, markedPrice, wholesa
   return result.rows[0];
 };
 
+const updateNumItems = async (id, numItems) => {
+  try {
+    if (!pool) throw new Error('Database connection is not established');
+    const query = `
+      UPDATE goods
+      SET 
+        numitems = $2
+      WHERE id = $1
+      RETURNING *;
+    `;
+    const values = [id, numItems];
+    const result = await pool.query(query, values);
+    return result.rows.length > 0 ? result.rows[0] : null;
+  } catch (error) {
+    throw new Error('Database query failed: ' + error.message);
+  }
+};
+
+
 // Delete a good by ID
 const deleteGood = async (id) => {
   const query = `DELETE FROM goods WHERE id = $1 RETURNING *;`;
@@ -78,4 +97,4 @@ const deleteGood = async (id) => {
   return result.rows[0];
 };
 
-module.exports = { addGood, getGoods, getGoodById, updateGood, deleteGood };
+module.exports = { addGood, getGoods, getGoodById, updateGood, deleteGood, updateNumItems };

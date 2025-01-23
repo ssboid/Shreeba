@@ -6,11 +6,29 @@ import { getWholesalers } from "../../services/wholesalersApi";
 import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 import { addGood } from "../../services/goodsApi";
 import Uploader from "../Uploader";
+import * as z from 'zod';
+// Zod Schema for Form Validation
+const FormSchema = z.object({
+  description: z.string().min(5, { message: "Description must be at least 5 characters" }),
+  wholesalerName: z.string().min(1, { message: "Wholesaler name is required" }),
+  costPrice: z.string().refine(val => !isNaN(parseFloat(val)), { message: "Cost price must be a number" }),
+  markedPrice: z.string().refine(val => !isNaN(parseFloat(val)), { message: "Marked price must be a number" }),
+  numItems: z.string().refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, { 
+    message: "Number of variants must be a positive number" 
+  }),
+  purchaseDate: z.string().min(1, { message: "Purchase date is required" }),
+  colors: z.array(z.string()).optional(),
+  sizes: z.array(z.string()).optional(),
+});
+
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
   const [wholesalers, setWholesalers] = useState([]);
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [productImage, setProductImage] = useState("");
+  const [errors, setErrors] = useState({});
+  const [shouldGenerateCode, setShouldGenerateCode] = useState(false);
+  const [codeError, setCodeError] = useState(""); // State to store the error message
 
   const { generateCode } = useGenerateItemCode(); // Use the hook
   const handleImageUpload = (imageUrl) => {
@@ -91,6 +109,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
   const handleGenerateCode = () => {
     const bundledData = bundleData(); // Get the bundled data
     console.log("Bundled Data for Code Generation:", bundledData); // Log bundled data
+    setCodeError(""); // Clear any existing errors
 
     const productCode = generateCode(
       bundledData.wholesalerName,
@@ -104,6 +123,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
       console.log("Successfully Generated Product Code:", productCode); // Log the product code
     } else {
       console.log("Failed to Generate Product Code. Check Input Data."); // Log failure
+      setCodeError("Failed to generate product code. Please check your inputs.");
+
     }
 
     // Update the formData with the generated product code
@@ -125,18 +146,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     fetchWholesalers();
   }, []);
 
-  const handleSaveManualCode = () => {
-    if (formData.productCode) {
-      console.log("Manual Code Saved:", formData.productCode); // Log the updated code
-      const bundledData = bundleData(); // Prepare the data to send
-      console.log("Submitting data:", bundledData);
-
-      // alert(`Manual Code Saved: ${formData.productCode}`);
-    } else {
-      console.log("Product code is empty. Nothing to save."); // Log empty case
-      // alert("Please enter a product code to save.");
-    }
-  };
+  
   useEffect(() => {
     const submitData = async () => {
       if (!shouldSubmit) return;
@@ -404,6 +414,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             </Form.Control>
           </Form.Field>
           <div className="flex gap-2">
+          {codeError && <p className="text-sm text-red-500">{codeError}</p>} {/* Display error here */}
+
             <button
               type="button"
               className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
@@ -411,13 +423,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             >
               Generate Code
             </button>
-            <button
-              type="button"
-              className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
-              onClick={handleSaveManualCode} // Trigger manual save
-            >
-              Save Manual
-            </button>
+
           </div>
         </div>
       </div>

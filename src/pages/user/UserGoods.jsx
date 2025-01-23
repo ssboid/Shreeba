@@ -296,6 +296,9 @@ const UserGoods = () => {
               <p className="text-gray-500">
                 Wholesaler Name: {item.wholesalername}
               </p>
+              <p>
+              Variants: <strong>{item.numitems}</strong>
+            </p>
             </div>
           ))}
         </div>
