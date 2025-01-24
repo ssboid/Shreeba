@@ -6,20 +6,7 @@ import { getWholesalers } from "../../services/wholesalersApi";
 import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 import { addGood } from "../../services/goodsApi";
 import Uploader from "../Uploader";
-import * as z from 'zod';
-// Zod Schema for Form Validation
-const FormSchema = z.object({
-  description: z.string().min(5, { message: "Description must be at least 5 characters" }),
-  wholesalerName: z.string().min(1, { message: "Wholesaler name is required" }),
-  costPrice: z.string().refine(val => !isNaN(parseFloat(val)), { message: "Cost price must be a number" }),
-  markedPrice: z.string().refine(val => !isNaN(parseFloat(val)), { message: "Marked price must be a number" }),
-  numItems: z.string().refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, { 
-    message: "Number of variants must be a positive number" 
-  }),
-  purchaseDate: z.string().min(1, { message: "Purchase date is required" }),
-  colors: z.array(z.string()).optional(),
-  sizes: z.array(z.string()).optional(),
-});
+
 
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
@@ -233,6 +220,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
                   />
                 ) : (
                   <input
+
                     className="w-full h-10 p-2 border rounded-lg text-gray-800"
                     type={field.type}
                     placeholder={field.placeholder}
@@ -285,6 +273,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               </Form.Label>
               <Form.Control asChild>
                 <input
+
                   className="w-full h-10 p-2 border rounded-lg text-gray-800"
                   type={field.type}
                   min="0" // Prevent negative values
@@ -340,6 +329,8 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             </Form.Label>
             <Form.Control asChild>
               <input
+              required
+
                 className="w-full h-10 p-2 border rounded-lg text-gray-800"
                 type="number"
                 placeholder="Enter number of variants"
@@ -400,6 +391,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
           <Form.Field name="productCode" className="flex-grow">
             <Form.Control asChild>
               <input
+              required
                 type="text"
                 className="w-full p-2 border rounded-lg text-gray-800"
                 placeholder="Code here..."
