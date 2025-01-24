@@ -188,7 +188,7 @@ const UserProducts = () => {
   }
 
   return (
-    <div className="bg-secondary100 rounded-lg shadow-2xl p-6">
+    <div className="bg-secondary100 rounded-lg shadow-2xl p-6 bg-white">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Product Image */}
         <div className="w-full lg:w-[300px]">

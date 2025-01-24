@@ -52,7 +52,6 @@ const Goods = () => {
       setFilteredData(filtered);
     }
   };
-  
 
   const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -115,12 +114,17 @@ const Goods = () => {
 
   const handleSortChange = () => {
     const sorted = [...filteredData].sort((a, b) => {
+      // Sort based on the current sortOrder
       if (sortOrder === "newest") {
-        return new Date(b.purchasedate) - new Date(a.purchasedate);
+        return new Date(a.purchasedate) - new Date(b.purchasedate); // Oldest to newest
       }
-      return new Date(a.purchasedate) - new Date(b.purchasedate);
+      return new Date(b.purchasedate) - new Date(a.purchasedate); // Newest to oldest
     });
+
+    // Toggle the sortOrder between "newest" and "oldest"
     setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"));
+
+    // Update the filteredData with the sorted array
     setFilteredData(sorted);
   };
 
@@ -224,7 +228,7 @@ const Goods = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search by Name..."
+            placeholder="Search by Name or Code"
             className="p-2 border rounded-md w-[220px]"
           />
           <button
@@ -291,7 +295,9 @@ const Goods = () => {
               />
               <h1 className="font-semibold text-lg">{item.name}</h1>
               <h2 className="font-semibold text-md">{item.productcode}</h2>
-              <p className="text-gray-500">Marked Price: ${item.markedprice}</p>
+              <p className="text-gray-500">
+                Marked Price: NRs. {item.markedprice}
+              </p>
               <p className="text-gray-500">
                 Wholesaler Name: {item.wholesalername}
               </p>
@@ -311,7 +317,7 @@ const Goods = () => {
               <Table.ColumnHeaderCell>Purchase Date</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Cost Price</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Marked Price</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell>
+              {/* <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell> */}
               <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
@@ -331,7 +337,7 @@ const Goods = () => {
                 <Table.Cell>{item.purchasedate}</Table.Cell>
                 <Table.Cell>{item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
-                <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell>
+                {/* <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell> */}
                 <Table.Cell>
                   <div className="relative z-40">
                     <button

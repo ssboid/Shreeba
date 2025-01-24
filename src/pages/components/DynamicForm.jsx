@@ -6,7 +6,32 @@ import { getWholesalers } from "../../services/wholesalersApi";
 import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 import { addGood } from "../../services/goodsApi";
 import Uploader from "../Uploader";
-
+import * as z from "zod";
+// Zod Schema for Form Validation
+const FormSchema = z.object({
+  description: z
+    .string()
+    .min(5, { message: "Description must be at least 5 characters" }),
+  wholesalerName: z.string().min(1, { message: "Wholesaler name is required" }),
+  costPrice: z
+    .string()
+    .refine((val) => !isNaN(parseFloat(val)), {
+      message: "Cost price must be a number",
+    }),
+  markedPrice: z
+    .string()
+    .refine((val) => !isNaN(parseFloat(val)), {
+      message: "Marked price must be a number",
+    }),
+  numItems: z
+    .string()
+    .refine((val) => !isNaN(parseInt(val)) && parseInt(val) > 0, {
+      message: "Number of variants must be a positive number",
+    }),
+  purchaseDate: z.string().min(1, { message: "Purchase date is required" }),
+  colors: z.array(z.string()).optional(),
+  sizes: z.array(z.string()).optional(),
+});
 
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
@@ -110,8 +135,9 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
       console.log("Successfully Generated Product Code:", productCode); // Log the product code
     } else {
       console.log("Failed to Generate Product Code. Check Input Data."); // Log failure
-      setCodeError("Failed to generate product code. Please check your inputs.");
-
+      setCodeError(
+        "Failed to generate product code. Please check your inputs."
+      );
     }
 
     // Update the formData with the generated product code
@@ -133,14 +159,13 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
     fetchWholesalers();
   }, []);
 
-  
   useEffect(() => {
     const submitData = async () => {
       if (!shouldSubmit) return;
       console.log("Preparing to submit data...");
       const bundledData = bundleData(); // Prepare the data to send
       console.log("Submitting data:", bundledData);
-  
+
       try {
         const response = await addGood(bundledData); // Call the API
         console.log("Good added successfully:", response);
@@ -152,12 +177,10 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         setShouldSubmit(false); // Reset submission trigger
       }
     };
-  
+
     submitData();
   }, [shouldSubmit]);
-  
 
-  
   return (
     <Form.Root className="p-6 bg-white space-y-6">
       {/* Sticky Add Item Header */}
@@ -390,24 +413,14 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
         <div className="flex flex-col lg:flex-row items-center gap-4 mt-4">
           <Form.Field name="productCode" className="flex-grow">
             <Form.Control asChild>
-              <input
-              required
-                type="text"
-                className="w-full p-2 border rounded-lg text-gray-800"
-                placeholder="Code here..."
-                value={formData.productCode || ""} // Bind to formData
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    productCode: e.target.value,
-                  }))
-                } // Allow manual editing
-              />
+              <div className="w-full p-2 border rounded-lg text-gray-800 bg-gray-100">
+                {formData.productCode || "No code available"}
+              </div>
             </Form.Control>
           </Form.Field>
           <div className="flex gap-2">
-          {codeError && <p className="text-sm text-red-500">{codeError}</p>} {/* Display error here */}
-
+            {codeError && <p className="text-sm text-red-500">{codeError}</p>}{" "}
+            {/* Display error here */}
             <button
               type="button"
               className="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600"
@@ -415,7 +428,6 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             >
               Generate Code
             </button>
-
           </div>
         </div>
       </div>

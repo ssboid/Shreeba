@@ -132,10 +132,10 @@ const ProductDetails = () => {
           {/* Pricing */}
           <div className="mt-4">
             <p>
-              Cost Price: <strong>{product.costprice}</strong>
+              Cost Price: <strong>NRs. {product.costprice}</strong>
             </p>
             <p>
-              Marked Price: <strong>{product.markedprice}</strong>
+              Marked Price: <strong>NRs. {product.markedprice}</strong>
             </p>
             <p>
               Variants: <strong>{product.numitems}</strong>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Table } from "@radix-ui/themes";
 import { Grid, List } from "lucide-react";
 // import image from "../assets/brand/Cover.png";
-import image from "../../assets/brand/Cover.png"
+import image from "../../assets/brand/Cover.png";
 import AddDialog from "./../components/AddDialog";
 import { deleteGood, getGoods } from "../../services/goodsApi";
 import { showToast } from "../../utils/toastUtils";
@@ -94,7 +94,7 @@ const UserGoods = () => {
       showToast("Failed to delete item. Please try again.", "error"); // Show error toast
     }
   };
-  
+
   const handleDeleteClick = (id) => {
     setItemToDelete(id);
     setIsDeleteModalOpen(true);
@@ -209,25 +209,24 @@ const UserGoods = () => {
     navigate(`/edit-good/${id}`); // Navigate to the edit form with the selected item's ID
   };
 
-
   return (
     <div className="2">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl text-primary1000 font-bold">UserGoods Inventory</h1>
+        <h1 className="text-2xl text-primary1000 font-bold">
+          UserGoods Inventory
+        </h1>
       </div>
 
-      
-
       <div className="flex py-4 justify-between">
-      {/* <AddDialog sections={sections} /> */}
+        {/* <AddDialog sections={sections} /> */}
         <div className="flex flex-wrap items-center gap-4">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search by Name..."
-          className="p-2 border rounded-md w-[220px]"
-        />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="Search by Name..."
+            className="p-2 border rounded-md w-[220px]"
+          />
           <button
             className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
             onClick={handleSortChange}
@@ -297,8 +296,8 @@ const UserGoods = () => {
                 Wholesaler Name: {item.wholesalername}
               </p>
               <p>
-              Variants: <strong>{item.numitems}</strong>
-            </p>
+                Variants: <strong>{item.numitems}</strong>
+              </p>
             </div>
           ))}
         </div>
@@ -315,8 +314,8 @@ const UserGoods = () => {
               <Table.ColumnHeaderCell>Purchase Date</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Cost Price</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Marked Price</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
+              {/* <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell> */}
+              {/* <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell> */}
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -332,10 +331,10 @@ const UserGoods = () => {
                     {item.name}
                   </span>
                 </Table.Cell>{" "}
-                <Table.Cell>{item.purchasedate}</Table.Cell>
-                <Table.Cell>{item.costprice}</Table.Cell>
+                <Table.Cell>Rs. {item.purchasedate}</Table.Cell>
+                <Table.Cell>Rs. {item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
-                <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell>
+                {/* <Table.Cell>Yes</Table.Cell> */}
                 <Table.Cell>
                   <div className="relative">
                     <button
@@ -346,12 +345,12 @@ const UserGoods = () => {
                     </button>
                     {activeActionId === item.id && (
                       <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
-                      <button
-  className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
-  onClick={() => handleEditClick(item.id)}
->
-  Edit
-</button>
+                        <button
+                          className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
+                          onClick={() => handleEditClick(item.id)}
+                        >
+                          Edit
+                        </button>
 
                         <button
                           className="w-full px-4 py-2 text-left hover:bg-red-100 text-red-600"
