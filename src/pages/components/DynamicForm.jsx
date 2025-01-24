@@ -6,32 +6,6 @@ import { getWholesalers } from "../../services/wholesalersApi";
 import useGenerateItemCode from "../../hooks/useGenerateItemCode";
 import { addGood } from "../../services/goodsApi";
 import Uploader from "../Uploader";
-import * as z from "zod";
-// Zod Schema for Form Validation
-const FormSchema = z.object({
-  description: z
-    .string()
-    .min(5, { message: "Description must be at least 5 characters" }),
-  wholesalerName: z.string().min(1, { message: "Wholesaler name is required" }),
-  costPrice: z
-    .string()
-    .refine((val) => !isNaN(parseFloat(val)), {
-      message: "Cost price must be a number",
-    }),
-  markedPrice: z
-    .string()
-    .refine((val) => !isNaN(parseFloat(val)), {
-      message: "Marked price must be a number",
-    }),
-  numItems: z
-    .string()
-    .refine((val) => !isNaN(parseInt(val)) && parseInt(val) > 0, {
-      message: "Number of variants must be a positive number",
-    }),
-  purchaseDate: z.string().min(1, { message: "Purchase date is required" }),
-  colors: z.array(z.string()).optional(),
-  sizes: z.array(z.string()).optional(),
-});
 
 const DynamicForm = ({ sections, itemCodeActions }) => {
   const [purchaseDate, setPurchaseDate] = useState("");
@@ -216,7 +190,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
             <Form.Field key={index} className="mb-4" name={field.name}>
               <div className="flex items-baseline justify-between">
                 <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
-                  {field.label}
+                  {field.label}*
                 </Form.Label>
                 {field.required && (
                   <Form.Message
@@ -243,7 +217,6 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
                   />
                 ) : (
                   <input
-
                     className="w-full h-10 p-2 border rounded-lg text-gray-800"
                     type={field.type}
                     placeholder={field.placeholder}
@@ -292,11 +265,10 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
           {sections[1].fields.map((field, index) => (
             <Form.Field key={index} className="mb-4" name={field.name}>
               <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
-                {field.label}
+                {field.label}*
               </Form.Label>
               <Form.Control asChild>
                 <input
-
                   className="w-full h-10 p-2 border rounded-lg text-gray-800"
                   type={field.type}
                   min="0" // Prevent negative values
@@ -319,7 +291,7 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
               Wholesaler
             </h2>
             <Form.Field className="mb-4 space-x-4" name="wholesalerName">
-              <Form.Label>Wholesaler Name</Form.Label>
+              <Form.Label>Wholesaler Name*</Form.Label>
               <Select.Root
                 value={formData.wholesalerName}
                 onValueChange={(value) =>
@@ -349,11 +321,10 @@ const DynamicForm = ({ sections, itemCodeActions }) => {
           <Form.Field className="mb-4" name="numItems">
             <Form.Label className="text-[15px] font-medium leading-[35px] text-gray-800">
               Number of Variants
-            </Form.Label>
+            </Form.Label>*
             <Form.Control asChild>
               <input
-              required
-
+                required
                 className="w-full h-10 p-2 border rounded-lg text-gray-800"
                 type="number"
                 placeholder="Enter number of variants"

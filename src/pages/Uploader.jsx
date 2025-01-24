@@ -56,7 +56,7 @@ const Uploader = ({ onImageUpload }) => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-800">Image Uploader</h2>
+      <h2 className="text-lg font-semibold text-gray-800">Upload your Image*</h2>
       <div
         {...getRootProps()}
         className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-orange-500 transition-colors"

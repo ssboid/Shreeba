@@ -5,7 +5,7 @@ import 'nepali-datepicker-reactjs/dist/index.css';
 const CalendarSection = ({ purchaseDate, handleDateChange }) => {
   return (
     <div className="p-4 border rounded-md shadow-sm bg-gray-50">
-      <h2 className="mb-4 text-lg font-semibold text-gray-800">Purchase Date</h2>
+      <h2 className="mb-4 text-lg font-semibold text-gray-800">Purchase Date*</h2>
       <NepaliDatePicker
         className="p-2 border rounded-lg text-gray-800"
         value={purchaseDate}

@@ -46,7 +46,9 @@ const UserGoods = () => {
       const filtered = goodsData.filter(
         (item) =>
           item.name.toLowerCase().includes(lowerCaseQuery) ||
-          item.wholesalername.toLowerCase().includes(lowerCaseQuery)
+          item.wholesalername.toLowerCase().includes(lowerCaseQuery) ||
+          item.productcode.toLowerCase().includes(lowerCaseQuery) ||
+          item.description.toLowerCase().includes(lowerCaseQuery)
       );
       setFilteredData(filtered);
     }
@@ -224,7 +226,7 @@ const UserGoods = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search by Name..."
+            placeholder="Search by Name or Code"
             className="p-2 border rounded-md w-[220px]"
           />
           <button
@@ -291,7 +293,7 @@ const UserGoods = () => {
               />
               <h1 className="font-semibold text-lg">{item.name}</h1>
               <h2 className="font-semibold text-md">{item.productcode}</h2>
-              <p className="text-gray-500">Marked Price: ${item.markedprice}</p>
+              <p className="text-gray-500">Marked Price: Nrs. {item.markedprice}</p>
               <p className="text-gray-500">
                 Wholesaler Name: {item.wholesalername}
               </p>
@@ -335,7 +337,7 @@ const UserGoods = () => {
                 <Table.Cell>Rs. {item.costprice}</Table.Cell>
                 <Table.Cell>{item.markedprice}</Table.Cell>
                 {/* <Table.Cell>Yes</Table.Cell> */}
-                <Table.Cell>
+                {/* <Table.Cell>
                   <div className="relative">
                     <button
                       className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 shadow-md"
@@ -361,7 +363,7 @@ const UserGoods = () => {
                       </div>
                     )}
                   </div>
-                </Table.Cell>
+                </Table.Cell> */}
               </Table.Row>
             ))}
           </Table.Body>

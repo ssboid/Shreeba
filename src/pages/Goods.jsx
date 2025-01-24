@@ -47,7 +47,8 @@ const Goods = () => {
         (item) =>
           item.name.toLowerCase().includes(lowerCaseQuery) ||
           item.wholesalername.toLowerCase().includes(lowerCaseQuery) ||
-          item.productcode.toLowerCase().includes(lowerCaseQuery) // Added search by productcode
+          item.productcode.toLowerCase().includes(lowerCaseQuery)||
+          item.description.toLowerCase().includes(lowerCaseQuery)
       );
       setFilteredData(filtered);
     }
@@ -235,7 +236,7 @@ const Goods = () => {
             className="py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300"
             onClick={handleSortChange}
           >
-            Sort by {sortOrder === "newest" ? "Newest" : "Oldest"}
+            Sort by {sortOrder === "newest" ? "Oldest" : "Newest"}
           </button>
           <select
             className="py-2 px-4 border rounded-md"
@@ -339,7 +340,7 @@ const Goods = () => {
                 <Table.Cell>{item.markedprice}</Table.Cell>
                 {/* <Table.Cell>{item.pieceavailable ? "Yes" : "No"}</Table.Cell> */}
                 <Table.Cell>
-                  <div className="relative z-40">
+                  <div className="relative">
                     <button
                       className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 shadow-md"
                       onClick={() => toggleActionMenu(item.id)}
@@ -347,7 +348,7 @@ const Goods = () => {
                       ...
                     </button>
                     {activeActionId === item.id && (
-                      <div className=" ">
+                      <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
                         <button
                           className="w-full px-4 py-2 text-left hover:bg-blue-100 text-blue-600"
                           onClick={() => handleEditClick(item.id)}
